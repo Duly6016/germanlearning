@@ -230,6 +230,9 @@
     let quizWords = [];
     let quizIndex = 0;
     let quizScore = 0;
+    let firstRoundTotal = 0;
+    let quizRound = 1;
+    let retryWords = [];
     let quizAnswered = false;
     let germanVoice = null;
     const pastExam1 = [
@@ -321,14 +324,16 @@
       const selectedSections = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
       quizWords = shuffle(words.filter(word => selectedSections.has(word.source || '未標示課程段落')));
       if (!quizWords.length) { alert('請至少選擇一個課程段落。'); return; }
-      quizIndex = 0; quizScore = 0; quizAnswered = false;
+      quizIndex = 0; quizScore = 0; firstRoundTotal = quizWords.length; quizRound = 1; retryWords = []; quizAnswered = false;
       quizQuestion.hidden = false;
       showQuizQuestion();
     }
 
     function showQuizQuestion() {
       const word = quizWords[quizIndex];
-      document.querySelector('#quizProgress').textContent = `第 ${quizIndex + 1}／${quizWords.length} 題　目前答對 ${quizScore} 題`;
+      document.querySelector('#quizProgress').textContent = quizRound === 1
+        ? `第一輪｜第 ${quizIndex + 1}／${quizWords.length} 題　目前答對 ${quizScore} 題`
+        : `第一輪答對 ${quizScore}／${firstRoundTotal} 題｜複習第 ${quizRound - 1} 輪：第 ${quizIndex + 1}／${quizWords.length} 題`;
       document.querySelector('#quizPrompt').textContent = `「${word.meaning || word.word}」的德文是？`;
       document.querySelector('#quizFeedback').textContent = '';
       document.querySelector('#quizFeedback').className = 'quiz-feedback';
@@ -344,8 +349,13 @@
       if (quizAnswered) {
         quizIndex += 1;
         if (quizIndex >= quizWords.length) {
+          if (retryWords.length) {
+            quizWords = shuffle(retryWords); retryWords = []; quizIndex = 0; quizRound += 1;
+            showQuizQuestion();
+            return;
+          }
           document.querySelector('#quizProgress').textContent = '完成小考';
-          document.querySelector('#quizPrompt').textContent = `你答對 ${quizScore}／${quizWords.length} 題。`;
+          document.querySelector('#quizPrompt').textContent = `第一輪答對 ${quizScore}／${firstRoundTotal} 題，全部單字都答對了！`;
           document.querySelector('#quizFeedback').textContent = '可以換一個段落再考，或重新挑戰同一個範圍。';
           answerInput.hidden = true; answerButton.type = 'button'; answerButton.textContent = '重新開始';
           answerButton.disabled = false;
@@ -368,11 +378,12 @@
         quizScore += 1; feedback.classList.add('correct');
         feedback.append('答對！點選 ', answerLink, ' 查看單字卡。');
       } else {
+        retryWords.push(word);
         feedback.classList.add('incorrect');
         feedback.append('正確答案：', answerLink, '（點選查看單字卡）');
       }
       quizAnswered = true; answerInput.disabled = true;
-      answerButton.textContent = quizIndex + 1 === quizWords.length ? '查看結果' : '下一題';
+      answerButton.textContent = quizIndex + 1 === quizWords.length ? '繼續' : '下一題';
     }
 
     function escapeHtml(value) {
