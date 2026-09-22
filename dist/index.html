@@ -244,7 +244,9 @@
       week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）']
     };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
+    const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
+    const quizAnswer = word => countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word;
     const makeRecord = row => ({
       gender: text(row['性別(名詞)'] ?? row['性別／冠詞'] ?? row['性別']),
       word: text(row['單字'] ?? row['德文'] ?? row['Word']),
@@ -354,12 +356,13 @@
         return;
       }
       const word = quizWords[quizIndex];
-      const answers = word.word.split('=').map(normalise);
+      const expectedAnswer = quizAnswer(word);
+      const answers = expectedAnswer.split('=').map(normalise);
       const isCorrect = answers.includes(normalise(answerInput.value));
       const feedback = document.querySelector('#quizFeedback');
       feedback.replaceChildren();
       const answerLink = document.createElement('button');
-      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = word.word;
+      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = expectedAnswer;
       answerLink.addEventListener('click', () => openDetail(word));
       if (isCorrect) {
         quizScore += 1; feedback.classList.add('correct');
