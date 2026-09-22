@@ -28,6 +28,8 @@
     .quiz h2 { color: #163a5f; margin: 0 0 .3rem; font-size: 1.3rem; }
     .quiz > p { margin: 0 0 .85rem; color: #52697f; line-height: 1.5; }
     .quiz-options { display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: .9rem; }
+    .quiz-presets { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .85rem 0; color: #52697f; font-size: .9rem; }
+    .quiz-presets .button { padding: .48rem .7rem; font-size: .88rem; }
     .quiz-option { display: flex; align-items: center; gap: .4rem; border: 1px solid #cbd7e2; padding: .45rem .65rem; border-radius: 9px; color: #38536c; font-size: .9rem; }
     .quiz-option input { width: 1rem; height: 1rem; accent-color: #163a5f; }
     .quiz-question { border-top: 1px solid #d9e2ea; margin-top: 1rem; padding-top: 1rem; }
@@ -36,6 +38,7 @@
     .answer-row { display: flex; gap: .65rem; }
     .answer-row input { flex: 1; min-width: 0; border: 1px solid #b9c7d4; border-radius: 10px; padding: .75rem .85rem; }
     .quiz-feedback { min-height: 1.45rem; margin: .7rem 0 0; font-weight: 650; }
+    .word-link { border: 0; background: transparent; color: #163a5f; font: inherit; font-weight: 800; padding: 0; text-decoration: underline; text-underline-offset: .16em; }
     .correct { color: #267049; } .incorrect { color: #a83d3d; }
     .study-plan { margin: 1.25rem 0; padding: 1.25rem; }
     .study-plan h2 { color: #163a5f; margin: 0 0 .3rem; font-size: 1.3rem; }
@@ -102,6 +105,13 @@
     <section class="quiz" id="quiz" hidden aria-labelledby="quizTitle">
       <h2 id="quizTitle">小考</h2>
       <p>先選要考的課程段落，再用中文提示回想德文單字。</p>
+      <div class="quiz-presets" id="quizPresets" aria-label="快速勾選課程內容">
+        <span>快速勾選：</span>
+        <button class="button secondary" type="button" data-preset="week1">第一週</button>
+        <button class="button secondary" type="button" data-preset="week2">第二週</button>
+        <button class="button secondary" type="button" data-preset="all">全部</button>
+        <button class="button secondary" type="button" data-preset="none">取消全選</button>
+      </div>
       <div class="quiz-options" id="quizOptions" aria-label="選擇課程段落"></div>
       <button class="button primary" id="startQuiz" type="button">開始小考</button>
       <div class="quiz-question" id="quizQuestion" hidden>
@@ -149,6 +159,7 @@
     const clearButton = document.querySelector('#clearButton');
     const detailWrap = document.querySelector('#detailWrap');
     const quiz = document.querySelector('#quiz');
+    const quizPresets = document.querySelector('#quizPresets');
     const quizOptions = document.querySelector('#quizOptions');
     const quizQuestion = document.querySelector('#quizQuestion');
     const answerInput = document.querySelector('#answerInput');
@@ -228,6 +239,10 @@
     const text = value => String(value ?? '').trim();
     const valueOrDash = value => text(value) || '—';
     const normalise = value => text(value).toLocaleLowerCase();
+    const quizPresetsByWeek = {
+      week1: ['Lektion1 - 1', 'Lektion1 - A2', 'Lektion1 - B1', 'Lektion1 - B2', 'Lektion1 - B4'],
+      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - E2', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）']
+    };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
     const makeRecord = row => ({
@@ -290,6 +305,12 @@
       });
     }
 
+    function applyQuizPreset(preset) {
+      const selectedSections = preset === 'all' ? new Set(sections()) : new Set(quizPresetsByWeek[preset] || []);
+      quizOptions.querySelectorAll('input').forEach(input => { input.checked = selectedSections.has(input.value); });
+      quizQuestion.hidden = true;
+    }
+
     function shuffle(items) {
       return [...items].sort(() => Math.random() - .5);
     }
@@ -336,8 +357,17 @@
       const answers = word.word.split('=').map(normalise);
       const isCorrect = answers.includes(normalise(answerInput.value));
       const feedback = document.querySelector('#quizFeedback');
-      if (isCorrect) { quizScore += 1; feedback.textContent = '答對了！'; feedback.classList.add('correct'); }
-      else { feedback.textContent = `正確答案：${word.word}`; feedback.classList.add('incorrect'); }
+      feedback.replaceChildren();
+      const answerLink = document.createElement('button');
+      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = word.word;
+      answerLink.addEventListener('click', () => openDetail(word));
+      if (isCorrect) {
+        quizScore += 1; feedback.classList.add('correct');
+        feedback.append('答對！點選 ', answerLink, ' 查看單字卡。');
+      } else {
+        feedback.classList.add('incorrect');
+        feedback.append('正確答案：', answerLink, '（點選查看單字卡）');
+      }
       quizAnswered = true; answerInput.disabled = true;
       answerButton.textContent = quizIndex + 1 === quizWords.length ? '查看結果' : '下一題';
     }
@@ -428,6 +458,11 @@
       storedWords.splice(0, storedWords.length); words = [...builtInWords]; quizWords = []; quizQuestion.hidden = true; localStorage.removeItem(storageKey); render();
     });
     document.querySelector('#startQuiz').addEventListener('click', startQuiz);
+    quizPresets.addEventListener('click', event => {
+      const preset = event.target.dataset.preset;
+      if (!preset) return;
+      applyQuizPreset(preset);
+    });
     document.querySelector('#answerForm').addEventListener('submit', checkAnswer);
     document.querySelector('#closeDetail').addEventListener('click', closeDetail);
     detailWrap.addEventListener('click', event => { if (event.target === detailWrap) closeDetail(); });
