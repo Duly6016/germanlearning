@@ -177,9 +177,9 @@
       ['', 'wer', '', 1, '誰', '疑問代詞', 'Lektion1 - B4'], ['', 'wissen', '', 2, '知道', '動詞', 'Lektion1 - B4'],
       ['', 'aus', '', 1, '自、從', '介詞', 'Lektion1 - C1'], ['', 'du', '', 1, '你', '代詞', 'Lektion1 - C1'],
       ['die', 'Schweiz', '', 1, '瑞士', '名詞', 'Lektion1 - C1'], ['', 'von', '', 1, '自、從', '介詞', 'Lektion1 - C1'],
-      ['das', 'Deutschland', '', 2, '德國', '名詞', 'Lektion1 - C1'], ['die', 'Firma', 'Firmen', 2, '公司', '名詞', 'Lektion1 - C1'],
+      ['', 'Deutschland', '', 2, '德國', '名詞', 'Lektion1 - C1'], ['die', 'Firma', 'Firmen', 2, '公司', '名詞', 'Lektion1 - C1'],
       ['', 'kommen', '', 2, '來', '動詞', 'Lektion1 - C1'], ['', 'woher', '', 2, '從哪裡', '疑問副詞', 'Lektion1 - C1'],
-      ['das', 'Österreich', '', 3, '奧地利', '名詞', 'Lektion1 - C1'], ['', 'und', '', 1, '和', '連詞', 'Lektion1 - C2'],
+      ['', 'Österreich', '', 3, '奧地利', '名詞', 'Lektion1 - C1'], ['', 'und', '', 1, '和', '連詞', 'Lektion1 - C2'],
       ['', 'aha', '', 2, '啊哈', '助詞', 'Lektion1 - C2'], ['', 'nur', '', 1, '僅；只', '副詞', 'Lektion1 - C3'],
       ['', 'was', '', 1, '什麼', '疑問副詞', 'Lektion1 - C4'], ['die', 'Sprache', 'Sprachen', 2, '語言', '名詞', 'Lektion1 - C4'],
       ['', 'sprechen', '', 2, '說（語言）', '動詞', 'Lektion1 - C4'], ['das', 'Alphabet', '', 3, '字母表', '名詞', 'Lektion1 - D1'],
@@ -228,6 +228,8 @@
     const text = value => String(value ?? '').trim();
     const valueOrDash = value => text(value) || '—';
     const normalise = value => text(value).toLocaleLowerCase();
+    const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
+    const articleLabel = word => text(word.gender) || (countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : '');
     const makeRecord = row => ({
       gender: text(row['性別(名詞)'] ?? row['性別／冠詞'] ?? row['性別']),
       word: text(row['單字'] ?? row['德文'] ?? row['Word']),
@@ -263,7 +265,7 @@
         sectionWords.forEach(word => {
         const card = document.createElement('button');
         card.type = 'button'; card.className = 'card';
-        card.innerHTML = `<span class="article">${escapeHtml(word.gender)}</span><span class="word">${escapeHtml(word.word)}</span><span class="translation">${escapeHtml(word.meaning || '未提供中文翻譯')}</span><span class="tags">${word.plural ? `<span class="tag">複數：${escapeHtml(word.plural)}</span>` : ''}${word.part ? `<span class="tag">${escapeHtml(word.part)}</span>` : ''}</span>`;
+        card.innerHTML = `<span class="article">${escapeHtml(articleLabel(word))}</span><span class="word">${escapeHtml(word.word)}</span><span class="translation">${escapeHtml(word.meaning || '未提供中文翻譯')}</span><span class="tags">${word.plural ? `<span class="tag">複數：${escapeHtml(word.plural)}</span>` : ''}${word.part ? `<span class="tag">${escapeHtml(word.part)}</span>` : ''}</span>`;
         card.addEventListener('click', () => openDetail(word));
         cards.append(card);
         });
@@ -368,10 +370,10 @@
 
     function openDetail(word) {
       selectedWord = word;
-      document.querySelector('#detailArticle').textContent = word.gender;
+      document.querySelector('#detailArticle').textContent = articleLabel(word);
       document.querySelector('#detailWord').textContent = word.word;
       document.querySelector('#detailMeaning').textContent = word.meaning || '未提供中文翻譯';
-      document.querySelector('#detailGender').textContent = valueOrDash(word.gender);
+      document.querySelector('#detailGender').textContent = articleLabel(word) || '—';
       document.querySelector('#detailPlural').textContent = valueOrDash(word.plural);
       document.querySelector('#detailPart').textContent = valueOrDash(word.part);
       document.querySelector('#detailSyllables').textContent = valueOrDash(word.syllables);
