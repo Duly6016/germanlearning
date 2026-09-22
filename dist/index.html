@@ -229,7 +229,7 @@
     const valueOrDash = value => text(value) || '—';
     const normalise = value => text(value).toLocaleLowerCase();
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
-    const articleLabel = word => text(word.gender) || (countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : '');
+    const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
     const makeRecord = row => ({
       gender: text(row['性別(名詞)'] ?? row['性別／冠詞'] ?? row['性別']),
       word: text(row['單字'] ?? row['德文'] ?? row['Word']),
