@@ -93,8 +93,8 @@
       <div class="study-steps">
         <div class="study-step"><strong>第 1 段｜C1–C2</strong>先練 <em>aus, von, woher, kommen, und, aha</em>，能說出「Ich komme aus …」。</div>
         <div class="study-step"><strong>第 2 段｜C3–C4</strong>複習 <em>nur, was, Sprache, sprechen</em>，並分清「國家」和「語言」。</div>
-        <div class="study-step"><strong>第 3 段｜國名</strong>選取 <em>Lektion1 - E2</em> 與「第二週補充（國名）」做小考，特別練 <em>der Schweiz / der Türkei / dem Jemen / den USA</em>。</div>
-        <div class="study-step"><strong>考前 10 分鐘</strong>用搜尋輸入 <em>aus</em>，逐一朗讀國名；再選 C1–C4 和國名範圍完成一次小考。</div>
+        <div class="study-step"><strong>第 3 段｜國名</strong>選取「第二週補充（國名）」做小考，特別練 <em>der Schweiz / der Türkei / dem Jemen / den USA</em>。</div>
+        <div class="study-step"><strong>考前 10 分鐘</strong>用搜尋輸入 <em>aus</em>，逐一朗讀國名；再選 C1–C4 和第二週補充範圍完成一次小考。</div>
       </div>
     </section>
     <section class="quiz" id="pastExam" hidden>
@@ -241,7 +241,7 @@
     const normalise = value => text(value).toLocaleLowerCase();
     const quizPresetsByWeek = {
       week1: ['Lektion1 - 1', 'Lektion1 - A2', 'Lektion1 - B1', 'Lektion1 - B2', 'Lektion1 - B4'],
-      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - E2', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）']
+      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）']
     };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
