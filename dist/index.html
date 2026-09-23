@@ -89,17 +89,17 @@
     </section>
     <section class="study-plan" aria-labelledby="studyPlanTitle">
       <h2 id="studyPlanTitle">本週複習路線</h2>
-      <p>依第二週講義與 Moodle 公告：本週單字小考範圍是 <strong>C 全部＋國名與語言</strong>。</p>
+      <p>依第二週實際小考：範圍是 <strong>C 全部＋國名與語言</strong>，共 33 題。</p>
       <div class="study-steps">
         <div class="study-step"><strong>第 1 段｜C1–C2</strong>先練 <em>aus, von, woher, kommen, und, aha</em>，能說出「Ich komme aus …」。</div>
         <div class="study-step"><strong>第 2 段｜C3–C4</strong>複習 <em>nur, was, Sprache, sprechen</em>，並分清「國家」和「語言」。</div>
-        <div class="study-step"><strong>第 3 段｜國名</strong>選取「第二週補充（國名）」做小考，特別練 <em>der Schweiz / der Türkei / dem Jemen / den USA</em>。</div>
-        <div class="study-step"><strong>考前 10 分鐘</strong>用搜尋輸入 <em>aus</em>，逐一朗讀國名；再選 C1–C4 和第二週補充範圍完成一次小考。</div>
+        <div class="study-step"><strong>第 3 段｜國名與語言</strong>練國名配對語言，例如 <em>Polen / Polnisch</em>、<em>die Türkei / Türkisch</em>。</div>
+        <div class="study-step"><strong>考前 10 分鐘</strong>選「第二週」完成一次小考，再用「考古題 2」練習真實題目。</div>
       </div>
     </section>
     <section class="quiz" id="pastExam" hidden>
       <h2>考古題</h2><p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-      <div id="pastExamMenu"><button class="button primary" id="openPastExam" type="button">考古題 1（23 題）</button></div>
+      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button></div>
       <form id="pastExamForm" hidden></form>
     </section>
     <section class="quiz" id="quiz" hidden aria-labelledby="quizTitle">
@@ -202,12 +202,18 @@
       ['die', 'Straße', 'Straßen', 2, '街道', '名詞', 'Lektion1 - E1'], ['die', 'Adresse', 'Adressen', 3, '地址', '名詞', 'Lektion1 - E1'],
       ['das', 'Telefon', 'Telefone', 3, '電話', '名詞', 'Lektion1 - E1'], ['der', 'Vorname', 'Vornamen', 3, '（姓氏之前的）名字', '名詞', 'Lektion1 - E1'],
       ['die', 'Visitenkarte', 'Visitenkarten', 5, '名片', '名詞', 'Lektion1 - E1'], ['der', 'Familienname', 'Familiennamen', 6, '姓氏', '名詞', 'Lektion1 - E1'],
-      ['', 'China', '', 2, '中國', '名詞', 'Lektion1 - E2'], ['', 'Frankreich', '', 2, '法國', '名詞', 'Lektion1 - E2'],
-      ['', 'Polen', '', 2, '波蘭', '名詞', 'Lektion1 - E2'], ['', 'Russland', '', 2, '俄國', '名詞', 'Lektion1 - E2'],
-      ['die', 'Türkei', '', 2, '土耳其', '名詞', 'Lektion1 - E2'], ['das', 'Formular', 'Formulare', 3, '表格', '名詞', 'Lektion1 - E2'],
-      ['', 'Griechenland', '', 3, '希臘', '名詞', 'Lektion1 - E2'], ['die', 'Postleitzahl', 'Postleitzahlen', 3, '郵政編碼', '名詞', 'Lektion1 - E2'],
-      ['', 'Spanien', '', 3, '西班牙', '名詞', 'Lektion1 - E2'], ['', 'Italien', '', 4, '義大利', '名詞', 'Lektion1 - E2'],
-      ['', 'Großbritannien', '', 5, '英國', '名詞', 'Lektion1 - E2'],
+      ['', 'China', '', 2, '中國', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Frankreich', '', 2, '法國', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Polen', '', 2, '波蘭', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Russland', '', 2, '俄國', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['die', 'Türkei', '', 2, '土耳其', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['das', 'Formular', 'Formulare', 3, '表格', '名詞', 'Lektion1 - E2'],
+      ['', 'Griechenland', '', 3, '希臘', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['die', 'Postleitzahl', 'Postleitzahlen', 3, '郵政編碼', '名詞', 'Lektion1 - E2'],
+      ['', 'Spanien', '', 3, '西班牙', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Italien', '', 4, '義大利', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Großbritannien', '', 5, '英國', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'ein bisschen', '', '', '一點點', '副詞片語', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Polnisch', '', '', '波蘭語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Türkisch', '', '', '土耳其語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Spanisch', '', '', '西班牙語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Chinesisch', '', '', '中文', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Deutsch', '', '', '德語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Russisch', '', '', '俄語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Englisch', '', '', '英語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Französisch', '', '', '法語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
+      ['', 'Italienisch', '', '', '義大利語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'], ['', 'Griechisch', '', '', '希臘語', '名詞', 'Lektion1 - 第二週小考（國名與語言）'],
       ['', 'Belgien', '', '', '比利時', '名詞', 'Lektion1 - 第二週補充（國名）'], ['', 'Dänemark', '', '', '丹麥', '名詞', 'Lektion1 - 第二週補充（國名）'],
       ['', 'Luxemburg', '', '', '盧森堡', '名詞', 'Lektion1 - 第二週補充（國名）'], ['', 'Portugal', '', '', '葡萄牙', '名詞', 'Lektion1 - 第二週補充（國名）'],
       ['der', 'Iran', '', '', '伊朗', '名詞', 'Lektion1 - 第二週補充（國名）'], ['der', 'Jemen', '', '', '葉門', '名詞', 'Lektion1 - 第二週補充（國名）'],
@@ -238,13 +244,33 @@
     const pastExam1 = [
       ['照片 N.','Das _____ ist schön.','Foto'],['你好 / 日安！','_____!','Guten Tag'],['再見！','_____!','Auf Wiedersehen'],['嗨！','_____, Lili!','Hallo'],['拜拜（告別）！','_____!','Tschüs'],['晚安（非睡前）','_____.','Guten Abend'],['女士 N.','Meine _____ und Herren.','Damen'],['女士（稱謂）','Sind Sie _____ Lara Nowak?','Frau'],['如何（疑問詞）','_____ ist dein Name?','Wie'],['歡迎 V.','_____!','Willkommen'],['音樂 N.','Die _____ ist schön.','Musik'],['對不起','Oh _____, Ihr Name bitte.','Entschuldigung'],['早安！','_____.','Guten Morgen'],['對（肯定詞）！','Bist du Sofia?\n_____, stimmt.','Ja'],['在（介係詞）','_____ uns in Taiwan sage ich 「你好」。','Bei'],['謝謝！','Gut, _____. Und dir?','danke'],['睡前晚安','_____.','Gute Nacht'],['誰（疑問詞）','_____ ist das?','Wer'],['不是（否定詞）','Das ist Sofia. _____, das ist Lara.','Nein'],['知道 V.','Ich _____ es nicht.','weiß'],['先生（稱謂）','Hallo, _____ Schröder.','Herr'],['叫做 V.','_____ Sie Walter Baumann?','Heißen'],['是（be-Verb）','_____ Sie Walter Baumann?','Sind']
     ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
+    const pastExam2 = [
+      ['你（人稱代名詞）', 'Wie heißt _____?', 'du'], ['從哪裡（疑問詞）', '_____ kommt er?', 'Woher'],
+      ['來 V', 'Ich _____ sofort（馬上）.', 'komme'], ['來自（介係詞）', 'Ah, Sie kommen _____ Singapur.', 'aus'],
+      ['公司 N', 'Wie heißt die _____?', 'Firma'], ['從（介係詞，須與 be-V 連用）', 'Sind Sie _____ dem Unternehmen（企業）Telefox?', 'von'],
+      ['德國（國名）', '_____ ist schön.', 'Deutschland'], ['奧地利（國名）', '_____ ist auch schön.', 'Österreich'],
+      ['瑞士（國名）', '_____ ist nicht groß（大）.', 'Die Schweiz'], ['和（conj.）', 'Eins _____ eins ist zwei.', 'und'],
+      ['什麼（疑問詞，問東西）', '_____ ist das?', 'Was'], ['說 V', '_____ Sie Englisch?', 'Sprechen'],
+      ['一點點', 'Ich verstehe（了解）_____ Japanisch.', 'ein bisschen'], ['語言 N', 'Welche（哪一個）_____ ist das?', 'Sprache'],
+      ['波蘭（國名）', 'Wo ist _____? In Europa.', 'Polen'], ['波蘭語', 'Sprechen（說）Sie _____? - Nein.', 'Polnisch'],
+      ['土耳其（國名）', 'Er kommt aus _____.', 'der Türkei'], ['土耳其語', 'Ich spreche _____.', 'Türkisch'],
+      ['西班牙（國名）', 'Kommt sie aus _____? - Ja.', 'Spanien'], ['西班牙語', '_____ ist nicht schwer（難的）.', 'Spanisch'],
+      ['中國（國名）', '_____ ist groß（大的）.', 'China'], ['中國話', 'Ich spreche _____. Und du?', 'Chinesisch'],
+      ['德語', '_____ ist nicht einfach（簡單）.', 'Deutsch'], ['俄羅斯（國名）', '_____ ist in Europa und Asien.', 'Russland'],
+      ['俄羅斯語', '_____ ist nicht einfach.', 'Russisch'], ['大不列顛（英國）（國名）', '_____ ist in Europa.', 'Großbritannien'],
+      ['英語', '_____ ist ein（ㄧ個）Muss（必須）.', 'Englisch'], ['法國（國名）', 'Wo ist _____? In Europa? - Ja, richtig.', 'Frankreich'],
+      ['法語', '_____ ist auch schwer.', 'Französisch'], ['義大利（國名）', 'Ist _____ groß（大的）?', 'Italien'],
+      ['義大利語', '_____ ist nicht einfach（簡單的）.', 'Italienisch'], ['希臘（國名）', 'Ist _____ klein（小的）?', 'Griechenland'],
+      ['希臘語', 'Wie ist _____? Sehr（非常）schwer（難的）.', 'Griechisch']
+    ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
+    let activePastExam = pastExam1;
 
     const text = value => String(value ?? '').trim();
     const valueOrDash = value => text(value) || '—';
     const normalise = value => text(value).toLocaleLowerCase();
     const quizPresetsByWeek = {
       week1: ['Lektion1 - 1', 'Lektion1 - A2', 'Lektion1 - B1', 'Lektion1 - B2', 'Lektion1 - B4'],
-      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）']
+      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週小考（國名與語言）']
     };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
@@ -390,10 +416,11 @@
       return text(value).replace(/[&<>'"]/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[character]);
     }
 
-    function openPastExam() {
+    function openPastExam(exam) {
+      activePastExam = exam;
       const form = document.querySelector('#pastExamForm');
       document.querySelector('#pastExamMenu').hidden = true; form.hidden = false;
-      form.innerHTML = pastExam1.map(item => `<section class="quiz-question"><p class="quiz-progress">Question ${item.id}｜提示：${escapeHtml(item.hint)}</p><p class="quiz-prompt" style="white-space:pre-line">${escapeHtml(item.question)}</p><input class="search" name="answer-${item.id}" autocomplete="off" aria-label="Question ${item.id} answer"></section>`).join('') + `<button class="button primary" type="submit">送出整份答案</button> <button class="button secondary" id="retryPastExam" type="button">重新作答</button><div class="quiz-feedback" id="pastExamResult"></div>`;
+      form.innerHTML = activePastExam.map(item => `<section class="quiz-question"><p class="quiz-progress">Question ${item.id}｜提示：${escapeHtml(item.hint)}</p><p class="quiz-prompt" style="white-space:pre-line">${escapeHtml(item.question)}</p><input class="search" name="answer-${item.id}" autocomplete="off" aria-label="Question ${item.id} answer"></section>`).join('') + `<button class="button primary" type="submit">送出整份答案</button> <button class="button secondary" id="retryPastExam" type="button">重新作答</button><div class="quiz-feedback" id="pastExamResult"></div>`;
     }
 
     function describeError(answer, correct) {
@@ -404,13 +431,14 @@
     }
 
     document.querySelector('#pastExamButton').addEventListener('click', () => { document.querySelector('#pastExam').hidden = false; document.querySelector('#pastExam').scrollIntoView({ behavior:'smooth' }); });
-    document.querySelector('#openPastExam').addEventListener('click', openPastExam);
+    document.querySelector('#openPastExam1').addEventListener('click', () => openPastExam(pastExam1));
+    document.querySelector('#openPastExam2').addEventListener('click', () => openPastExam(pastExam2));
     document.querySelector('#pastExamForm').addEventListener('submit', event => {
       event.preventDefault(); const form = event.currentTarget; let score = 0;
-      const rows = pastExam1.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) score += 1; return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
-      document.querySelector('#pastExamResult').innerHTML = `<strong>總分：${score} / ${pastExam1.length}</strong>${rows}`;
+      const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) score += 1; return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
+      document.querySelector('#pastExamResult').innerHTML = `<strong>總分：${score} / ${activePastExam.length}</strong>${rows}`;
     });
-    document.querySelector('#pastExamForm').addEventListener('click', event => { if (event.target.id === 'retryPastExam') { event.preventDefault(); openPastExam(); } });
+    document.querySelector('#pastExamForm').addEventListener('click', event => { if (event.target.id === 'retryPastExam') { event.preventDefault(); openPastExam(activePastExam); } });
 
     function openDetail(word) {
       selectedWord = word;
