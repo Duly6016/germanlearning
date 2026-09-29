@@ -89,12 +89,12 @@
     </section>
     <section class="study-plan" aria-labelledby="studyPlanTitle">
       <h2 id="studyPlanTitle">本週複習路線</h2>
-      <p>依第二週實際小考：範圍是 <strong>C 全部＋國名與語言</strong>，共 33 題。</p>
+      <p>依第三週課後通知與 Moodle：本週單字小考範圍是 <strong>D 全部</strong>。</p>
       <div class="study-steps">
-        <div class="study-step"><strong>第 1 段｜C1–C2</strong>先練 <em>aus, von, woher, kommen, und, aha</em>，能說出「Ich komme aus …」。</div>
-        <div class="study-step"><strong>第 2 段｜C3–C4</strong>複習 <em>nur, was, Sprache, sprechen</em>，並分清「國家」和「語言」。</div>
-        <div class="study-step"><strong>第 3 段｜國名與語言</strong>練國名配對語言，例如 <em>Polen / Polnisch</em>、<em>die Türkei / Türkisch</em>。</div>
-        <div class="study-step"><strong>考前 10 分鐘</strong>選「第二週」完成一次小考，再用「考古題 2」練習真實題目。</div>
+        <div class="study-step"><strong>第 1 段｜D1</strong>練 <em>das Alphabet</em>、<em>der Buchstabe</em>，配合 88 音練習建立字母發音。</div>
+        <div class="study-step"><strong>第 2 段｜D2</strong>練 <em>bitte</em>、<em>buchstabieren</em>，能把自己的名字拼讀出來。</div>
+        <div class="study-step"><strong>第 3 段｜D3</strong>複習 <em>der Dank</em>、<em>der Moment</em>，並注意冠詞和複數形。</div>
+        <div class="study-step"><strong>考前 10 分鐘</strong>選「第三週」完成一次小考；答錯的字會持續重考到全部答對。</div>
       </div>
     </section>
     <section class="quiz" id="pastExam" hidden>
@@ -109,6 +109,7 @@
         <span>快速勾選：</span>
         <button class="button secondary" type="button" data-preset="week1">第一週</button>
         <button class="button secondary" type="button" data-preset="week2">第二週</button>
+        <button class="button secondary" type="button" data-preset="week3">第三週</button>
         <button class="button secondary" type="button" data-preset="all">全部</button>
         <button class="button secondary" type="button" data-preset="none">取消全選</button>
       </div>
@@ -270,7 +271,8 @@
     const normalise = value => text(value).toLocaleLowerCase();
     const quizPresetsByWeek = {
       week1: ['Lektion1 - 1', 'Lektion1 - A2', 'Lektion1 - B1', 'Lektion1 - B2', 'Lektion1 - B4'],
-      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週小考（國名與語言）', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）']
+      week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週小考（國名與語言）', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）'],
+      week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3']
     };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
