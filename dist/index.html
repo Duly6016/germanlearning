@@ -296,6 +296,7 @@
       { label: '第三週', sources: new Set(quizPresetsByWeek.week3) }
     ];
     const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
+    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週' };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
@@ -345,25 +346,25 @@
       });
     }
 
-    function sections() { return [...new Set(words.map(word => word.source || '未標示課程段落'))]; }
+    function quizWeeks() { return [...new Set(words.map(weekLabel))]; }
 
     function renderQuizOptions() {
       const previousSelection = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
       quizOptions.replaceChildren();
-      sections().forEach(section => {
+      quizWeeks().forEach(week => {
         const label = document.createElement('label');
         label.className = 'quiz-option';
         const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox'; checkbox.value = section;
-        checkbox.checked = previousSelection.size ? previousSelection.has(section) : true;
-        label.append(checkbox, document.createTextNode(section));
+        checkbox.type = 'checkbox'; checkbox.value = week;
+        checkbox.checked = previousSelection.size ? previousSelection.has(week) : true;
+        label.append(checkbox, document.createTextNode(week));
         quizOptions.append(label);
       });
     }
 
     function applyQuizPreset(preset) {
-      const selectedSections = preset === 'all' ? new Set(sections()) : new Set(quizPresetsByWeek[preset] || []);
-      quizOptions.querySelectorAll('input').forEach(input => { input.checked = selectedSections.has(input.value); });
+      const selectedWeeks = preset === 'all' ? new Set(quizWeeks()) : new Set(presetWeekLabels[preset] ? [presetWeekLabels[preset]] : []);
+      quizOptions.querySelectorAll('input').forEach(input => { input.checked = selectedWeeks.has(input.value); });
       quizQuestion.hidden = true;
     }
 
@@ -372,8 +373,8 @@
     }
 
     function startQuiz() {
-      const selectedSections = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
-      quizWords = shuffle(words.filter(word => selectedSections.has(word.source || '未標示課程段落')));
+      const selectedWeeks = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
+      quizWords = shuffle(words.filter(word => selectedWeeks.has(weekLabel(word))));
       if (!quizWords.length) { alert('請至少選擇一個課程段落。'); return; }
       quizIndex = 0; quizScore = 0; firstRoundTotal = quizWords.length; quizRound = 1; retryWords = []; quizAnswered = false;
       quizQuestion.hidden = false;
