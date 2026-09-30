@@ -99,7 +99,7 @@
     </section>
     <section class="quiz" id="pastExam" hidden>
       <h2>考古題</h2><p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button></div>
+      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button></div>
       <form id="pastExamForm" hidden></form>
     </section>
     <section class="quiz" id="quiz" hidden aria-labelledby="quizTitle">
@@ -198,6 +198,9 @@
       ['der', 'Buchstabe', 'Buchstaben', 3, '字母', '名詞', 'Lektion1 - D1'], ['', 'bitte', '', 2, '請', '助詞', 'Lektion1 - D2'],
       ['', 'buchstabieren', '', 4, '拼讀出', '動詞', 'Lektion1 - D2'], ['der', 'Dank', '', 1, '感謝', '名詞', 'Lektion1 - D3'],
       ['der', 'Moment', 'Momente', 2, '片刻', '名詞', 'Lektion1 - D3'], ['das', 'Fax', 'Faxe', 1, '傳真', '名詞', 'Lektion1 - E1'],
+      ['', 'Wie bitte', '', '', '請再說一次', '慣用語', 'Lektion1 - 第三週小考（口語補充）'], ['', 'da', '', '', '在場；到了', '副詞', 'Lektion1 - 第三週小考（口語補充）'],
+      ['', 'Tut mir leid', '', '', '很抱歉；對此遺憾', '慣用語', 'Lektion1 - 第三週小考（口語補充）'], ['', 'nicht', '', '', '不；不是', '否定詞', 'Lektion1 - 第三週小考（口語補充）'],
+      ['', 'Vielen Dank', '', '', '非常謝謝', '慣用語', 'Lektion1 - 第三週小考（口語補充）'], ['', 'Auf Wiederhören', '', '', '再聽（電話道別）', '慣用語', 'Lektion1 - 第三週小考（口語補充）'],
       ['das', 'Land', 'Länder', 1, '國家', '名詞', 'Lektion1 - E1'], ['der', 'Sport', '', 1, '運動', '名詞', 'Lektion1 - E1'],
       ['die', 'Stadt', 'Städte', 1, '城市', '名詞', 'Lektion1 - E1'], ['die', 'E-Mail', 'E-Mails', 2, '電子郵件', '名詞', 'Lektion1 - E1'],
       ['die', 'Straße', 'Straßen', 2, '街道', '名詞', 'Lektion1 - E1'], ['die', 'Adresse', 'Adressen', 3, '地址', '名詞', 'Lektion1 - E1'],
@@ -264,6 +267,19 @@
       ['義大利語', '_____ ist nicht einfach（簡單的）.', 'Italienisch'], ['希臘（國名）', 'Ist _____ klein（小的）?', 'Griechenland'],
       ['希臘語', 'Wie ist _____? Sehr（非常）schwer（難的）.', 'Griechisch']
     ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
+    const pastExam3 = [
+      ['字母 N（一個個的字母）', 'A ist ein（ㄧ個）_____.', 'Buchstabe'],
+      ['字母 N（字母總稱，永遠單數）', 'Ich lerne（學）das deutsche（德語的）_____.', 'Alphabet'],
+      ['什麼再說一次', '_____? Ich verstehe nicht（我不了解）.', 'Wie bitte'],
+      ['拼字 V', 'Ich _____: C-H-I-A-N-G, Chiang.', 'buchstabiere'],
+      ['請', '_____!', 'Bitte'],
+      ['（某某人）在場／到了（Adv.）', 'Ist Frau Chiang schon（已經）_____?', 'da'],
+      ['時刻／片刻 N', 'Einen _____.', 'Moment'],
+      ['很抱歉；對此遺憾', '_____.', 'Tut mir leid'],
+      ['否定字眼（= 英文 not）', 'Ich weiß es _____.', 'nicht'],
+      ['非常謝謝', '_____!', 'Vielen Dank'],
+      ['再聽（電話上的再見）', '_____!', 'Auf Wiederhören']
+    ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
     let activePastExam = pastExam1;
 
     const text = value => String(value ?? '').trim();
@@ -272,7 +288,7 @@
     const quizPresetsByWeek = {
       week1: ['Lektion1 - 1', 'Lektion1 - A2', 'Lektion1 - B1', 'Lektion1 - B2', 'Lektion1 - B4'],
       week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週小考（國名與語言）', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）'],
-      week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3']
+      week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - 第三週小考（口語補充）']
     };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
@@ -435,6 +451,7 @@
     document.querySelector('#pastExamButton').addEventListener('click', () => { document.querySelector('#pastExam').hidden = false; document.querySelector('#pastExam').scrollIntoView({ behavior:'smooth' }); });
     document.querySelector('#openPastExam1').addEventListener('click', () => openPastExam(pastExam1));
     document.querySelector('#openPastExam2').addEventListener('click', () => openPastExam(pastExam2));
+    document.querySelector('#openPastExam3').addEventListener('click', () => openPastExam(pastExam3));
     document.querySelector('#pastExamForm').addEventListener('submit', event => {
       event.preventDefault(); const form = event.currentTarget; let score = 0;
       const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) score += 1; return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
