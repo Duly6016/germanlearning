@@ -81,7 +81,8 @@
   </header>
   <main>
     <section class="toolbar" aria-label="單字工具">
-      <input class="search" id="search" type="search" placeholder="搜尋德文、中文、詞性或出處" autocomplete="off">
+      <input class="search" id="search" type="search" placeholder="搜尋德文、中文、詞性或出處" autocomplete="off" list="searchSuggestions">
+      <datalist id="searchSuggestions"></datalist>
       <label class="button primary" for="fileInput">匯入 Excel</label>
       <button class="button secondary" id="pastExamButton" type="button">考古題</button>
       <button class="button secondary" id="clearButton" type="button" hidden>還原內建單字</button>
@@ -156,6 +157,7 @@
     const emptyState = document.querySelector('#emptyState');
     const status = document.querySelector('#status');
     const search = document.querySelector('#search');
+    const searchSuggestions = document.querySelector('#searchSuggestions');
     const fileInput = document.querySelector('#fileInput');
     const clearButton = document.querySelector('#clearButton');
     const detailWrap = document.querySelector('#detailWrap');
@@ -320,6 +322,7 @@
       quiz.hidden = false;
       status.textContent = `已載入 ${words.length} 個單字（內建 ${builtInWords.length} 個${storedWords.length ? `，你的 Excel ${storedWords.length} 個` : ''}）${query ? `，顯示 ${visible.length} 個結果` : ''}`;
       renderQuizOptions();
+      renderSearchSuggestions();
       const grouped = new Map();
       visible.forEach(word => {
         const week = weekLabel(word);
@@ -343,6 +346,21 @@
         });
         group.append(heading, cards);
         grid.append(group);
+      });
+    }
+
+    function renderSearchSuggestions() {
+      const suggestions = new Map();
+      words.forEach(word => {
+        const label = [word.meaning, word.part].filter(Boolean).join('｜');
+        if (word.word && !suggestions.has(word.word)) suggestions.set(word.word, label);
+      });
+      searchSuggestions.replaceChildren();
+      suggestions.forEach((label, word) => {
+        const option = document.createElement('option');
+        option.value = word;
+        option.label = label;
+        searchSuggestions.append(option);
       });
     }
 
