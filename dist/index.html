@@ -46,10 +46,10 @@
     .study-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .75rem; }
     .study-step { border: 1px solid #d9e2ea; border-radius: 12px; padding: .8rem; color: #38536c; line-height: 1.5; }
     .study-step strong { display: block; color: #163a5f; margin-bottom: .25rem; }
-    .groups { display: grid; gap: 2rem; }
-    .section-heading { display: flex; align-items: baseline; gap: .75rem; margin: 0 0 .8rem .2rem; }
-    .section-heading h2 { font-size: 1.18rem; color: #163a5f; margin: 0; }
-    .section-heading span { color: #6a8094; font-size: .86rem; }
+    .groups { display: grid; gap: 1rem; }
+    .week-group { background: #fff; border: 1px solid #d9e2ea; border-radius: 16px; padding: 0 1rem 1rem; box-shadow: 0 3px 10px rgba(22, 58, 95, .05); }
+    .week-group summary { display: flex; align-items: baseline; gap: .75rem; padding: 1rem .15rem; color: #163a5f; cursor: pointer; font-size: 1.18rem; font-weight: 800; }
+    .week-group summary span { color: #6a8094; font-size: .86rem; font-weight: 400; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 1rem; }
     .card { width: 100%; min-height: 150px; padding: 1.1rem; text-align: left; background: white; border: 1px solid #d9e2ea; border-radius: 16px; color: inherit; box-shadow: 0 3px 10px rgba(22, 58, 95, .05); transition: transform .15s, box-shadow .15s, border-color .15s; }
     .card:hover, .card:focus-visible { border-color: #e0ad34; box-shadow: 0 9px 20px rgba(22, 58, 95, .13); transform: translateY(-2px); outline: none; }
@@ -290,6 +290,12 @@
       week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週小考（國名與語言）', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）'],
       week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - 第三週小考（口語補充）']
     };
+    const weekSourceGroups = [
+      { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
+      { label: '第二週', sources: new Set(quizPresetsByWeek.week2) },
+      { label: '第三週', sources: new Set(quizPresetsByWeek.week3) }
+    ];
+    const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
@@ -315,15 +321,16 @@
       renderQuizOptions();
       const grouped = new Map();
       visible.forEach(word => {
-        const section = word.source || '未標示課程段落';
-        if (!grouped.has(section)) grouped.set(section, []);
-        grouped.get(section).push(word);
+        const week = weekLabel(word);
+        if (!grouped.has(week)) grouped.set(week, []);
+        grouped.get(week).push(word);
       });
-      grouped.forEach((sectionWords, section) => {
-        const group = document.createElement('section');
-        const heading = document.createElement('div');
-        heading.className = 'section-heading';
-        heading.innerHTML = `<h2>${escapeHtml(section)}</h2><span>${sectionWords.length} 個單字</span>`;
+      grouped.forEach((sectionWords, week) => {
+        const group = document.createElement('details');
+        group.className = 'week-group';
+        group.open = Boolean(query);
+        const heading = document.createElement('summary');
+        heading.innerHTML = `${escapeHtml(week)}<span>${sectionWords.length} 個單字</span>`;
         const cards = document.createElement('div');
         cards.className = 'grid';
         sectionWords.forEach(word => {
