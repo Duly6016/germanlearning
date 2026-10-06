@@ -100,7 +100,7 @@
     </section>
     <section class="quiz" id="pastExam" hidden>
       <h2>考古題</h2><p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button></div>
+      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button></div>
       <form id="pastExamForm" hidden></form>
     </section>
     <section class="quiz" id="quiz" hidden aria-labelledby="quizTitle">
@@ -206,6 +206,7 @@
       ['', 'Vielen Dank', '', '', '非常謝謝', '慣用語', 'Lektion1 - 第三週小考（口語補充）'], ['', 'Auf Wiederhören', '', '', '再聽（電話道別）', '慣用語', 'Lektion1 - 第三週小考（口語補充）'],
       ['das', 'Land', 'Länder', 1, '國家', '名詞', 'Lektion1 - E1'], ['der', 'Sport', '', 1, '運動', '名詞', 'Lektion1 - E1'],
       ['die', 'Stadt', 'Städte', 1, '城市', '名詞', 'Lektion1 - E1'], ['die', 'E-Mail', 'E-Mails', 2, '電子郵件', '名詞', 'Lektion1 - E1'],
+      ['die', 'E-Mail-Adresse', 'E-Mail-Adressen', '', '電子郵件地址', '名詞', 'Lektion1 - E1'],
       ['die', 'Straße', 'Straßen', 2, '街道', '名詞', 'Lektion1 - E1'], ['die', 'Adresse', 'Adressen', 3, '地址', '名詞', 'Lektion1 - E1'],
       ['das', 'Telefon', 'Telefone', 3, '電話', '名詞', 'Lektion1 - E1'], ['der', 'Vorname', 'Vornamen', 3, '（姓氏之前的）名字', '名詞', 'Lektion1 - E1'],
       ['die', 'Visitenkarte', 'Visitenkarten', 5, '名片', '名詞', 'Lektion1 - E1'], ['der', 'Familienname', 'Familiennamen', 6, '姓氏', '名詞', 'Lektion1 - E1'],
@@ -282,6 +283,21 @@
       ['否定字眼（= 英文 not）', 'Ich weiß es _____.', 'nicht'],
       ['非常謝謝', '_____!', 'Vielen Dank'],
       ['再聽（電話上的再見）', '_____!', 'Auf Wiederhören']
+    ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
+    const pastExam4 = [
+      ['地址 N', 'Wie ist deine _____?', 'Adresse'], ['名片 N', 'Schreiben Sie Ihre _____!', 'Visitenkarte'],
+      ['運動 N', '_____ ist super.', 'Sport'], ['名 N', 'Mein _____ ist Heidi.', 'Vorname'],
+      ['姓 N', 'Mein _____ ist Meyer.', 'Familienname'], ['街 N', 'Wie heißt die _____?', 'Straße'],
+      ['城市 N', 'Die _____ ist klein（小）.', 'Stadt'], ['國家／土地 N', 'Das _____ ist groß（大）.', 'Land'],
+      ['電話 N', 'Ist das dein _____?', 'Telefon'], ['傳真 N', 'Da ist ein _____.', 'Fax'],
+      ['電郵地址 N（要加寫地址）', 'Wie ist deine _____?', 'E-Mail-Adresse'], ['表格 N', 'Ergänzen Sie das _____!', 'Formular'],
+      ['郵遞區號 N', 'Die _____ ist 106.', 'Postleitzahl'], ['土耳其 N', 'Wo liegt（位於／位在）_____?', 'die Türkei'],
+      ['中國 N', '_____ ist groß（大）.', 'China'], ['西班牙 N', 'Ist _____ schön?', 'Spanien'],
+      ['蘇俄 N', 'Wo liegt（位於）_____?', 'Russland'], ['英國 N', 'Ist _____ nicht schön?', 'Großbritannien'],
+      ['法國 N', '_____ ist auch schön.', 'Frankreich'], ['義大利 N', '_____ ist aber nicht groß（大）.', 'Italien'],
+      ['希臘 N', 'Wo liegt（位於）_____?', 'Griechenland'], ['波蘭 N', 'Liegt（位於）_____ in Europa?', 'Polen'],
+      ['法文／法語 N', 'Sprichst du _____?', 'Französisch'], ['希臘語 N', '_____ ist schwer（難的）.', 'Griechisch'],
+      ['英文／英語 N', '_____ ist einfach（簡單的）.', 'Englisch']
     ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
     let activePastExam = pastExam1;
 
@@ -497,6 +513,7 @@
     document.querySelector('#openPastExam1').addEventListener('click', () => openPastExam(pastExam1));
     document.querySelector('#openPastExam2').addEventListener('click', () => openPastExam(pastExam2));
     document.querySelector('#openPastExam3').addEventListener('click', () => openPastExam(pastExam3));
+    document.querySelector('#openPastExam4').addEventListener('click', () => openPastExam(pastExam4));
     document.querySelector('#pastExamForm').addEventListener('submit', event => {
       event.preventDefault(); const form = event.currentTarget; let score = 0;
       const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) score += 1; return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
