@@ -90,12 +90,12 @@
     </section>
     <section class="study-plan" aria-labelledby="studyPlanTitle">
       <h2 id="studyPlanTitle">本週複習路線</h2>
-      <p>依第三週課後通知與 Moodle：本週單字小考範圍是 <strong>D 全部</strong>。</p>
+      <p>依第四次單字小考範圍：本週要複習 <strong>E1＋E2 全部</strong>，並再次包含國名與語言。</p>
       <div class="study-steps">
-        <div class="study-step"><strong>第 1 段｜D1</strong>練 <em>das Alphabet</em>、<em>der Buchstabe</em>，配合 88 音練習建立字母發音。</div>
-        <div class="study-step"><strong>第 2 段｜D2</strong>練 <em>bitte</em>、<em>buchstabieren</em>，能把自己的名字拼讀出來。</div>
-        <div class="study-step"><strong>第 3 段｜D3</strong>複習 <em>der Dank</em>、<em>der Moment</em>，並注意冠詞和複數形。</div>
-        <div class="study-step"><strong>考前 10 分鐘</strong>選「第三週」完成一次小考；答錯的字會持續重考到全部答對。</div>
+        <div class="study-step"><strong>第 1 段｜E1</strong>複習聯絡資料與日常名詞，例如 <em>die Adresse</em>、<em>das Telefon</em>。</div>
+        <div class="study-step"><strong>第 2 段｜E2</strong>複習 <em>das Formular</em>、<em>die Postleitzahl</em>，並注意名詞冠詞和複數形。</div>
+        <div class="study-step"><strong>第 3 段｜國名與語言</strong>再次練習國名配對語言，例如 <em>Polen / Polnisch</em>、<em>die Türkei / Türkisch</em>。</div>
+        <div class="study-step"><strong>考前 10 分鐘</strong>選「第四週」完成一次小考；答錯的字會持續重考到全部答對。</div>
       </div>
     </section>
     <section class="quiz" id="pastExam" hidden>
@@ -111,6 +111,7 @@
         <button class="button secondary" type="button" data-preset="week1">第一週</button>
         <button class="button secondary" type="button" data-preset="week2">第二週</button>
         <button class="button secondary" type="button" data-preset="week3">第三週</button>
+        <button class="button secondary" type="button" data-preset="week4">第四週</button>
         <button class="button secondary" type="button" data-preset="all">全部</button>
         <button class="button secondary" type="button" data-preset="none">取消全選</button>
       </div>
@@ -290,15 +291,24 @@
     const quizPresetsByWeek = {
       week1: ['Lektion1 - 1', 'Lektion1 - A2', 'Lektion1 - B1', 'Lektion1 - B2', 'Lektion1 - B4'],
       week2: ['Lektion1 - C1', 'Lektion1 - C2', 'Lektion1 - C3', 'Lektion1 - C4', 'Lektion1 - 第二週小考（國名與語言）', 'Lektion1 - 第二週補充（國名）', 'Lektion1 - 第二週補充（動詞）', 'Lektion1 - 第二週補充（疑問詞）', 'Lektion1 - 第二週補充（代名詞）'],
-      week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - 第三週小考（口語補充）']
+      week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - 第三週小考（口語補充）'],
+      week4: ['Lektion1 - E1', 'Lektion1 - E2', 'Lektion1 - 第二週小考（國名與語言）']
     };
     const weekSourceGroups = [
       { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
       { label: '第二週', sources: new Set(quizPresetsByWeek.week2) },
-      { label: '第三週', sources: new Set(quizPresetsByWeek.week3) }
+      { label: '第三週', sources: new Set(quizPresetsByWeek.week3) },
+      { label: '第四週', sources: new Set(['Lektion1 - E1', 'Lektion1 - E2']) }
     ];
     const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
-    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週' };
+    const quizWeekOptions = [
+      { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
+      { label: '第二週', sources: new Set(quizPresetsByWeek.week2) },
+      { label: '第三週', sources: new Set(quizPresetsByWeek.week3) },
+      { label: '第四週', sources: new Set(quizPresetsByWeek.week4) }
+    ];
+    const knownQuizSources = new Set(quizWeekOptions.flatMap(option => [...option.sources]));
+    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週' };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
@@ -364,7 +374,16 @@
       });
     }
 
-    function quizWeeks() { return [...new Set(words.map(weekLabel))]; }
+    function quizWeeks() {
+      const weeks = quizWeekOptions.filter(option => words.some(word => option.sources.has(word.source))).map(option => option.label);
+      if (words.some(word => !knownQuizSources.has(word.source))) weeks.push('其他／尚未安排週次');
+      return weeks;
+    }
+
+    function wordMatchesQuizWeek(word, week) {
+      const option = quizWeekOptions.find(item => item.label === week);
+      return option ? option.sources.has(word.source) : !knownQuizSources.has(word.source);
+    }
 
     function renderQuizOptions() {
       const previousSelection = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
@@ -392,7 +411,7 @@
 
     function startQuiz() {
       const selectedWeeks = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
-      quizWords = shuffle(words.filter(word => selectedWeeks.has(weekLabel(word))));
+      quizWords = shuffle(words.filter(word => [...selectedWeeks].some(week => wordMatchesQuizWeek(word, week))));
       if (!quizWords.length) { alert('請至少選擇一個課程段落。'); return; }
       quizIndex = 0; quizScore = 0; firstRoundTotal = quizWords.length; quizRound = 1; retryWords = []; quizAnswered = false;
       quizQuestion.hidden = false;
