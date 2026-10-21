@@ -100,7 +100,7 @@
     </section>
     <section class="quiz" id="pastExam" hidden>
       <h2>考古題</h2><p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button></div>
+      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button></div>
       <form id="pastExamForm" hidden></form>
     </section>
     <section class="quiz" id="quiz" hidden aria-labelledby="quizTitle">
@@ -311,6 +311,23 @@
       ['希臘 N', 'Wo liegt（位於）_____?', 'Griechenland'], ['波蘭 N', 'Liegt（位於）_____ in Europa?', 'Polen'],
       ['法文／法語 N', 'Sprichst du _____?', 'Französisch'], ['希臘語 N', '_____ ist schwer（難的）.', 'Griechisch'],
       ['英文／英語 N', '_____ ist einfach（簡單的）.', 'Englisch']
+    ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
+    const pastExam5 = [
+      ['妻子／太太 N', 'Jasmin hat _____ .', 'eine Ehefrau'],
+      ['錯誤的 Adj', 'Das ist _____.', 'falsch'],
+      ['正是／的確（副詞）', 'Passt es? – _____!', 'genau'],
+      ['清單 N', 'Machen Sie bitte eine _____!', 'Liste'],
+      ['一起 Adv', 'Lars Eltern leben nicht _____.', 'zusammen'],
+      ['她／他們（代詞）', 'Wer ist _____?', 'sie'],
+      ['她／他們（代詞）', 'Kommt _____ aus Deutschland?', 'sie'],
+      ['離婚的 Adj', 'Lars Eltern sind _____.', 'geschieden'],
+      ['他（代詞）', 'Wer ist _____?', 'er'],
+      ['住 V', 'Tim _____ in München.', 'wohnt'],
+      ['現在 Adv', 'Was macht du _____?', 'jetzt'],
+      ['你們（代詞）', 'Wer seid _____?', 'ihr'],
+      ['我們（代詞）', '_____ sind Studenten der Chen-Chi Universität.', 'Wir'],
+      ['數字 N', '0, 1, 2, 3, … sind _____.', 'Zahlen'],
+      ['零 N（注意否定冠詞）', 'Das ist _____.', 'keine Null']
     ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
     let activePastExam = pastExam1;
 
@@ -533,6 +550,7 @@
     document.querySelector('#openPastExam2').addEventListener('click', () => openPastExam(pastExam2));
     document.querySelector('#openPastExam3').addEventListener('click', () => openPastExam(pastExam3));
     document.querySelector('#openPastExam4').addEventListener('click', () => openPastExam(pastExam4));
+    document.querySelector('#openPastExam5').addEventListener('click', () => openPastExam(pastExam5));
     document.querySelector('#pastExamForm').addEventListener('submit', event => {
       event.preventDefault(); const form = event.currentTarget; let score = 0;
       const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) score += 1; return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
