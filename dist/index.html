@@ -90,12 +90,12 @@
     </section>
     <section class="study-plan" aria-labelledby="studyPlanTitle">
       <h2 id="studyPlanTitle">本週複習路線</h2>
-      <p>第六週繼續第二課 <strong>Meine Familie</strong>：本週小考範圍是 <strong>B3 到 D1</strong>，練習家庭關係、第三人稱與數字。</p>
+      <p>第七週複習第二課 <strong>D3</strong>：本週小考聚焦個人資料、年齡、居住地與婚姻狀況。</p>
       <div class="study-steps">
-        <div class="study-step"><strong>第 1 段｜家庭關係</strong>複習 <em>der Ehemann</em>、<em>die Ehefrau</em>、<em>die Liste</em>，並注意名詞冠詞與複數。</div>
-        <div class="study-step"><strong>第 2 段｜他／她／我們</strong>練習 <em>er</em>、<em>sie</em>、<em>wir</em>、<em>ihr</em>，搭配 <em>wohnen</em>、<em>zusammen</em> 等句子使用。</div>
-        <div class="study-step"><strong>第 3 段｜數字</strong>記住 <em>die Null</em> 與 <em>die Zahl</em>，並分辨它們的意思。</div>
-        <div class="study-step"><strong>考前小考</strong>選「第六週」只會考第二課 <strong>B3、C1、C3、D1</strong>；D3 之後的單字仍先保留在後續週次。</div>
+        <div class="study-step"><strong>第 1 段｜基本資料</strong>記住 <em>das Alter</em>、<em>die Nummer</em>、<em>der Wohnort</em>、<em>der Geburtsort</em>。</div>
+        <div class="study-step"><strong>第 2 段｜狀態與問句</strong>練習 <em>ledig</em>、<em>verheiratet</em>、<em>verwitwet</em>、<em>geboren</em>、<em>wo</em>。</div>
+        <div class="study-step"><strong>第 3 段｜整合練習</strong>把 <em>der Familienstand</em>、<em>liegen</em> 和自己的個人資料放進完整句子。</div>
+        <div class="study-step"><strong>考前小考</strong>選「第七週」只會考第二課 <strong>D3</strong>；其他後續單字會維持保留、等新的範圍再納入。</div>
       </div>
     </section>
     <section class="quiz" id="pastExam" hidden>
@@ -114,6 +114,7 @@
         <button class="button secondary" type="button" data-preset="week4">第四週</button>
         <button class="button secondary" type="button" data-preset="week5">第五週</button>
         <button class="button secondary" type="button" data-preset="week6">第六週</button>
+        <button class="button secondary" type="button" data-preset="week7">第七週</button>
         <button class="button secondary" type="button" data-preset="all">全部</button>
         <button class="button secondary" type="button" data-preset="none">取消全選</button>
       </div>
@@ -340,7 +341,8 @@
       week3: ['Lektion1 - D1', 'Lektion1 - D2', 'Lektion1 - D3', 'Lektion1 - 第三週小考（口語補充）'],
       week4: ['Lektion1 - E1', 'Lektion1 - E2', 'Lektion1 - 第二週小考（國名與語言）'],
       week5: ['Lektion2 - 1', 'Lektion2 - 3', 'Lektion2 - A1', 'Lektion2 - B1', 'Lektion2 - B2'],
-      week6: ['Lektion2 - B3', 'Lektion2 - C1', 'Lektion2 - C3', 'Lektion2 - D1']
+      week6: ['Lektion2 - B3', 'Lektion2 - C1', 'Lektion2 - C3', 'Lektion2 - D1'],
+      week7: ['Lektion2 - D3']
     };
     const weekSourceGroups = [
       { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
@@ -348,7 +350,9 @@
       { label: '第三週', sources: new Set(quizPresetsByWeek.week3) },
       { label: '第四週', sources: new Set(['Lektion1 - E1', 'Lektion1 - E2']) },
       { label: '第五週', sources: new Set(quizPresetsByWeek.week5) },
-      { label: '第六週', sources: new Set(quizPresetsByWeek.week6) }
+      { label: '第六週', sources: new Set(quizPresetsByWeek.week6) },
+      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) },
+      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) }
     ];
     const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
     const quizWeekOptions = [
@@ -360,7 +364,7 @@
       { label: '第六週', sources: new Set(quizPresetsByWeek.week6) }
     ];
     const knownQuizSources = new Set(quizWeekOptions.flatMap(option => [...option.sources]));
-    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週' };
+    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週', week7: '第七週' };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
