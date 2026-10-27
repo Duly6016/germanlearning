@@ -566,12 +566,12 @@
     function showSelectedWordInLibrary() {
       if (!selectedWord) return;
       const cardId = `word-card-${wordKey(selectedWord)}`;
-      let card = document.getElementById(cardId);
-      if (!card) {
-        search.value = selectedWord.word;
-        render();
-        card = document.getElementById(cardId);
-      }
+
+      // Leave search mode so the complete weekly vocabulary section is visible.
+      search.value = '';
+      render();
+      const card = document.getElementById(cardId);
+
       detailWrap.hidden = true;
       selectedWord = null;
       if (!card) return;
