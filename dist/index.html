@@ -351,7 +351,6 @@
       { label: '第四週', sources: new Set(['Lektion1 - E1', 'Lektion1 - E2']) },
       { label: '第五週', sources: new Set(quizPresetsByWeek.week5) },
       { label: '第六週', sources: new Set(quizPresetsByWeek.week6) },
-      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) },
       { label: '第七週', sources: new Set(quizPresetsByWeek.week7) }
     ];
     const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
@@ -361,7 +360,8 @@
       { label: '第三週', sources: new Set(quizPresetsByWeek.week3) },
       { label: '第四週', sources: new Set(quizPresetsByWeek.week4) },
       { label: '第五週', sources: new Set(quizPresetsByWeek.week5) },
-      { label: '第六週', sources: new Set(quizPresetsByWeek.week6) }
+      { label: '第六週', sources: new Set(quizPresetsByWeek.week6) },
+      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) }
     ];
     const knownQuizSources = new Set(quizWeekOptions.flatMap(option => [...option.sources]));
     const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週', week7: '第七週' };
