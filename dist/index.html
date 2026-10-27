@@ -634,11 +634,15 @@
       } finally { fileInput.value = ''; }
     });
 
-    search.addEventListener('input', render);
-    search.addEventListener('change', () => {
+    function openExactSearchMatch() {
       const matchedWord = words.find(word => normalise(word.word) === normalise(search.value));
       if (matchedWord) openDetail(matchedWord);
+    }
+    search.addEventListener('input', () => {
+      render();
+      openExactSearchMatch();
     });
+    search.addEventListener('change', openExactSearchMatch);
     clearButton.addEventListener('click', () => {
       if (!confirm('要移除這台裝置自行匯入的單字，還原成內建單字嗎？')) return;
       storedWords.splice(0, storedWords.length); words = [...builtInWords]; quizWords = []; quizQuestion.hidden = true; localStorage.removeItem(storageKey); render();
