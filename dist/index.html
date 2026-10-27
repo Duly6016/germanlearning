@@ -152,6 +152,7 @@
         <dt>課本出處</dt><dd id="detailSource">—</dd>
       </dl>
       <button class="button primary speak" id="speakButton" type="button">🔊 聽發音</button>
+      <button class="button secondary speak" id="showInLibraryButton" type="button">在單字庫中顯示</button>
       <p class="hint">發音只使用裝置的德文語音。若顯示提醒，請先在裝置設定安裝 German／Deutsch 語音。</p>
     </article>
   </section>
@@ -405,7 +406,7 @@
         cards.className = 'grid';
         sectionWords.forEach(word => {
         const card = document.createElement('button');
-        card.type = 'button'; card.className = 'card';
+        card.type = 'button'; card.className = 'card'; card.id = `word-card-${wordKey(word)}`;
         card.innerHTML = `<span class="article">${escapeHtml(articleLabel(word))}</span><span class="word">${escapeHtml(word.word)}</span><span class="translation">${escapeHtml(word.meaning || '未提供中文翻譯')}</span><span class="tags">${word.plural ? `<span class="tag">複數：${escapeHtml(word.plural)}</span>` : ''}${word.part ? `<span class="tag">${escapeHtml(word.part)}</span>` : ''}</span>`;
         card.addEventListener('click', () => openDetail(word));
         cards.append(card);
@@ -562,6 +563,23 @@
     });
     document.querySelector('#pastExamForm').addEventListener('click', event => { if (event.target.id === 'retryPastExam') { event.preventDefault(); openPastExam(activePastExam); } });
 
+    function showSelectedWordInLibrary() {
+      if (!selectedWord) return;
+      const cardId = `word-card-${wordKey(selectedWord)}`;
+      let card = document.getElementById(cardId);
+      if (!card) {
+        search.value = selectedWord.word;
+        render();
+        card = document.getElementById(cardId);
+      }
+      detailWrap.hidden = true;
+      selectedWord = null;
+      if (!card) return;
+      card.closest('details')?.setAttribute('open', '');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.focus({ preventScroll: true });
+    }
+
     function openDetail(word) {
       selectedWord = word;
       document.querySelector('#detailArticle').textContent = articleLabel(word);
@@ -617,6 +635,10 @@
     });
 
     search.addEventListener('input', render);
+    search.addEventListener('change', () => {
+      const matchedWord = words.find(word => normalise(word.word) === normalise(search.value));
+      if (matchedWord) openDetail(matchedWord);
+    });
     clearButton.addEventListener('click', () => {
       if (!confirm('要移除這台裝置自行匯入的單字，還原成內建單字嗎？')) return;
       storedWords.splice(0, storedWords.length); words = [...builtInWords]; quizWords = []; quizQuestion.hidden = true; localStorage.removeItem(storageKey); render();
@@ -631,6 +653,7 @@
     document.querySelector('#closeDetail').addEventListener('click', closeDetail);
     detailWrap.addEventListener('click', event => { if (event.target === detailWrap) closeDetail(); });
     document.querySelector('#speakButton').addEventListener('click', () => speak(selectedWord));
+    document.querySelector('#showInLibraryButton').addEventListener('click', showSelectedWordInLibrary);
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && !detailWrap.hidden) closeDetail(); });
     findGermanVoice();
     if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = findGermanVoice;
