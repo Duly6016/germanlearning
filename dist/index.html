@@ -46,6 +46,15 @@
     .study-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .75rem; }
     .study-step { border: 1px solid #d9e2ea; border-radius: 12px; padding: .8rem; color: #38536c; line-height: 1.5; }
     .study-step strong { display: block; color: #163a5f; margin-bottom: .25rem; }
+    .collapsible-panel { padding: 0; overflow: hidden; }
+    .collapsible-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.25rem; cursor: pointer; color: #163a5f; font-size: 1.3rem; font-weight: 750; list-style: none; }
+    .collapsible-panel > summary::-webkit-details-marker { display: none; }
+    .collapsible-panel > summary::after { content: '⌄'; font-size: 1.35rem; font-weight: 500; transition: transform .18s ease; }
+    .collapsible-panel[open] > summary { border-bottom: 1px solid #d9e2ea; }
+    .collapsible-panel[open] > summary::after { transform: rotate(180deg); }
+    .panel-content { padding: 1rem 1.25rem 1.25rem; }
+    .study-plan .panel-content { padding-top: .9rem; }
+    .collapsible-panel .panel-content > h2 { margin-top: 0; }
     .groups { display: grid; gap: 1rem; }
     .week-group { background: #fff; border: 1px solid #d9e2ea; border-radius: 16px; padding: 0 1rem 1rem; box-shadow: 0 3px 10px rgba(22, 58, 95, .05); }
     .week-group summary { display: flex; align-items: baseline; gap: .75rem; padding: 1rem .15rem; color: #163a5f; cursor: pointer; font-size: 1.18rem; font-weight: 800; }
@@ -88,48 +97,55 @@
       <button class="button secondary" id="clearButton" type="button" hidden>還原內建單字</button>
       <input id="fileInput" type="file" accept=".xlsx,.xls" hidden>
     </section>
-    <section class="study-plan" aria-labelledby="studyPlanTitle">
-      <h2 id="studyPlanTitle">本週複習路線</h2>
-      <p>第七週複習第二課 <strong>D3</strong>：本週小考聚焦個人資料、年齡、居住地與婚姻狀況。</p>
-      <div class="study-steps">
-        <div class="study-step"><strong>第 1 段｜基本資料</strong>記住 <em>das Alter</em>、<em>die Nummer</em>、<em>der Wohnort</em>、<em>der Geburtsort</em>。</div>
-        <div class="study-step"><strong>第 2 段｜狀態與問句</strong>練習 <em>ledig</em>、<em>verheiratet</em>、<em>verwitwet</em>、<em>geboren</em>、<em>wo</em>。</div>
-        <div class="study-step"><strong>第 3 段｜整合練習</strong>把 <em>der Familienstand</em>、<em>liegen</em> 和自己的個人資料放進完整句子。</div>
-        <div class="study-step"><strong>考前小考</strong>選「第七週」只會考第二課 <strong>D3</strong>；其他後續單字會維持保留、等新的範圍再納入。</div>
+    <details class="collapsible-panel study-plan" open>
+      <summary id="studyPlanTitle">本週複習路線</summary>
+      <div class="panel-content">
+        <p>第七週複習第二課 <strong>D3</strong>：本週小考聚焦個人資料、年齡、居住地與婚姻狀況。</p>
+        <div class="study-steps">
+          <div class="study-step"><strong>第 1 段｜基本資料</strong>記住 <em>das Alter</em>、<em>die Nummer</em>、<em>der Wohnort</em>、<em>der Geburtsort</em>。</div>
+          <div class="study-step"><strong>第 2 段｜狀態與問句</strong>練習 <em>ledig</em>、<em>verheiratet</em>、<em>verwitwet</em>、<em>geboren</em>、<em>wo</em>。</div>
+          <div class="study-step"><strong>第 3 段｜整合練習</strong>把 <em>der Familienstand</em>、<em>liegen</em> 和自己的個人資料放進完整句子。</div>
+          <div class="study-step"><strong>考前小考</strong>選「第七週」只會考第二課 <strong>D3</strong>；其他後續單字會維持保留、等新的範圍再納入。</div>
+        </div>
       </div>
-    </section>
-    <section class="quiz" id="pastExam" hidden>
-      <h2>考古題</h2><p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-      <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button></div>
-      <form id="pastExamForm" hidden></form>
-    </section>
-    <section class="quiz" id="quiz" hidden aria-labelledby="quizTitle">
-      <h2 id="quizTitle">小考</h2>
-      <p>先選要考的課程段落，再用中文提示回想德文單字。</p>
-      <div class="quiz-presets" id="quizPresets" aria-label="快速勾選課程內容">
-        <span>快速勾選：</span>
-        <button class="button secondary" type="button" data-preset="week1">第一週</button>
-        <button class="button secondary" type="button" data-preset="week2">第二週</button>
-        <button class="button secondary" type="button" data-preset="week3">第三週</button>
-        <button class="button secondary" type="button" data-preset="week4">第四週</button>
-        <button class="button secondary" type="button" data-preset="week5">第五週</button>
-        <button class="button secondary" type="button" data-preset="week6">第六週</button>
-        <button class="button secondary" type="button" data-preset="week7">第七週</button>
-        <button class="button secondary" type="button" data-preset="all">全部</button>
-        <button class="button secondary" type="button" data-preset="none">取消全選</button>
+    </details>
+    <details class="collapsible-panel quiz" id="pastExam" hidden>
+      <summary>考古題</summary>
+      <div class="panel-content">
+        <p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
+        <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button></div>
+        <form id="pastExamForm" hidden></form>
       </div>
-      <div class="quiz-options" id="quizOptions" aria-label="選擇課程段落"></div>
-      <button class="button primary" id="startQuiz" type="button">開始小考</button>
-      <div class="quiz-question" id="quizQuestion" hidden>
-        <p class="quiz-progress" id="quizProgress"></p>
-        <p class="quiz-prompt" id="quizPrompt"></p>
-        <form class="answer-row" id="answerForm">
-          <input id="answerInput" autocomplete="off" placeholder="輸入德文單字" aria-label="德文答案">
-          <button class="button primary" id="answerButton" type="submit">送出</button>
-        </form>
-        <p class="quiz-feedback" id="quizFeedback" aria-live="polite"></p>
+    </details>
+    <details class="collapsible-panel quiz" id="quiz" hidden open aria-labelledby="quizTitle">
+      <summary id="quizTitle">小考</summary>
+      <div class="panel-content">
+        <p>先選要考的課程段落，再用中文提示回想德文單字。</p>
+        <div class="quiz-presets" id="quizPresets" aria-label="快速勾選課程內容">
+          <span>快速勾選：</span>
+          <button class="button secondary" type="button" data-preset="week1">第一週</button>
+          <button class="button secondary" type="button" data-preset="week2">第二週</button>
+          <button class="button secondary" type="button" data-preset="week3">第三週</button>
+          <button class="button secondary" type="button" data-preset="week4">第四週</button>
+          <button class="button secondary" type="button" data-preset="week5">第五週</button>
+          <button class="button secondary" type="button" data-preset="week6">第六週</button>
+          <button class="button secondary" type="button" data-preset="week7">第七週</button>
+          <button class="button secondary" type="button" data-preset="all">全部</button>
+          <button class="button secondary" type="button" data-preset="none">取消全選</button>
+        </div>
+        <div class="quiz-options" id="quizOptions" aria-label="選擇課程段落"></div>
+        <button class="button primary" id="startQuiz" type="button">開始小考</button>
+        <div class="quiz-question" id="quizQuestion" hidden>
+          <p class="quiz-progress" id="quizProgress"></p>
+          <p class="quiz-prompt" id="quizPrompt"></p>
+          <form class="answer-row" id="answerForm">
+            <input id="answerInput" autocomplete="off" placeholder="輸入德文單字" aria-label="德文答案">
+            <button class="button primary" id="answerButton" type="submit">送出</button>
+          </form>
+          <p class="quiz-feedback" id="quizFeedback" aria-live="polite"></p>
+        </div>
       </div>
-    </section>
+    </details>
     <p class="status" id="status" aria-live="polite"></p>
     <section class="empty" id="emptyState">
       <h2>已載入內建單字</h2>
@@ -550,7 +566,7 @@
       return '答案完全不同';
     }
 
-    document.querySelector('#pastExamButton').addEventListener('click', () => { document.querySelector('#pastExam').hidden = false; document.querySelector('#pastExam').scrollIntoView({ behavior:'smooth' }); });
+    document.querySelector('#pastExamButton').addEventListener('click', () => { const pastExam = document.querySelector('#pastExam'); pastExam.hidden = false; pastExam.open = true; pastExam.scrollIntoView({ behavior:'smooth' }); });
     document.querySelector('#openPastExam1').addEventListener('click', () => openPastExam(pastExam1));
     document.querySelector('#openPastExam2').addEventListener('click', () => openPastExam(pastExam2));
     document.querySelector('#openPastExam3').addEventListener('click', () => openPastExam(pastExam3));
