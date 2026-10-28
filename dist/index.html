@@ -164,6 +164,7 @@
         <dt>性別／冠詞</dt><dd id="detailGender">—</dd>
         <dt>複數形</dt><dd id="detailPlural">—</dd>
         <dt>詞性</dt><dd id="detailPart">—</dd>
+        <dt id="detailVerbFormsLabel" hidden>不規則變化</dt><dd id="detailVerbForms" hidden></dd>
         <dt>音節數</dt><dd id="detailSyllables">—</dd>
         <dt>課本出處</dt><dd id="detailSource">—</dd>
       </dl>
@@ -264,11 +265,33 @@
     ].map(([gender, word, plural, syllables, meaning, part, source]) => ({ gender, word, plural, syllables, meaning, part, source }));
     const builtInWords = [...lessonOneWords, ...lessonTwoWords];
     const storedWords = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    const irregularVerbForms = {
+      'heißen': { present3: 'heißt', preterite: 'hieß', participle: 'geheißen', auxiliary: 'haben' },
+      'wissen': { present3: 'weiß', preterite: 'wusste', participle: 'gewusst', auxiliary: 'haben' },
+      'kommen': { preterite: 'kam', participle: 'gekommen', auxiliary: 'sein' },
+      'sprechen': { present3: 'spricht', preterite: 'sprach', participle: 'gesprochen', auxiliary: 'haben' },
+      'sein': { present3: 'ist', preterite: 'war', participle: 'gewesen', auxiliary: 'sein' },
+      'haben': { present3: 'hat', preterite: 'hatte', participle: 'gehabt', auxiliary: 'haben' },
+      'liegen': { preterite: 'lag', participle: 'gelegen', auxiliary: 'haben' },
+      'kennen': { preterite: 'kannte', participle: 'gekannt', auxiliary: 'haben' }
+    };
+    const addIrregularVerbForms = word => {
+      const lemma = String(word.word ?? '').split('=')[0].trim().toLocaleLowerCase();
+      const knownForms = irregularVerbForms[lemma];
+      if (!knownForms) return word;
+      return {
+        ...word,
+        present3: word.present3 || knownForms.present3 || '',
+        preterite: word.preterite || knownForms.preterite || '',
+        participle: word.participle || knownForms.participle || '',
+        auxiliary: word.auxiliary || knownForms.auxiliary || ''
+      };
+    };
     const wordKey = word => `${String(word.source ?? '').trim().toLocaleLowerCase()}|${String(word.word ?? '').trim().toLocaleLowerCase()}`;
     const mergeWords = additions => {
       const merged = new Map(builtInWords.map(word => [wordKey(word), word]));
       additions.forEach(word => merged.set(wordKey(word), word));
-      return [...merged.values()];
+      return [...merged.values()].map(addIrregularVerbForms);
     };
     let words = mergeWords(storedWords);
     let selectedWord = null;
@@ -393,7 +416,11 @@
       syllables: text(row['音節數']),
       meaning: text(row['中文翻譯'] ?? row['中文'] ?? row['Translation']),
       part: text(row['詞性'] ?? row['詞類']),
-      source: text(row['課本出處'] ?? row['出處'])
+      source: text(row['課本出處'] ?? row['出處']),
+      present3: text(row['現在式變化（er/sie/es）'] ?? row['現在式變化 (er/sie/es)'] ?? row['第三人稱現在式'] ?? row['Präsens (er/sie/es)'] ?? row['Present 3rd person']),
+      preterite: text(row['過去式（Präteritum）'] ?? row['過去式 (Präteritum)' ] ?? row['過去式'] ?? row['Präteritum'] ?? row['Preterite']),
+      participle: text(row['過去分詞（Partizip II）'] ?? row['過去分詞 (Partizip II)'] ?? row['過去分詞'] ?? row['Partizip II'] ?? row['Past participle']),
+      auxiliary: text(row['完成式助動詞（haben/sein）'] ?? row['完成式助動詞 (haben/sein)'] ?? row['助動詞'] ?? row['Hilfsverb'] ?? row['Auxiliary'])
     });
 
     function render() {
@@ -604,6 +631,16 @@
       document.querySelector('#detailGender').textContent = articleLabel(word) || '—';
       document.querySelector('#detailPlural').textContent = valueOrDash(word.plural);
       document.querySelector('#detailPart').textContent = valueOrDash(word.part);
+      const verbForms = [
+        word.present3 && `現在式（er/sie/es）：${word.present3}`,
+        word.preterite && `過去式（Präteritum）：${word.preterite}`,
+        word.participle && `過去分詞（Partizip II）：${word.participle}`,
+        word.auxiliary && `完成式助動詞：${word.auxiliary}`
+      ].filter(Boolean);
+      const verbFormsLabel = document.querySelector('#detailVerbFormsLabel');
+      const verbFormsValue = document.querySelector('#detailVerbForms');
+      verbFormsLabel.hidden = verbFormsValue.hidden = verbForms.length === 0;
+      verbFormsValue.textContent = verbForms.join('；');
       document.querySelector('#detailSyllables').textContent = valueOrDash(word.syllables);
       document.querySelector('#detailSource').textContent = valueOrDash(word.source);
       detailWrap.hidden = false;
