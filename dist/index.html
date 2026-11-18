@@ -32,6 +32,10 @@
     .quiz-presets .button { padding: .48rem .7rem; font-size: .88rem; }
     .quiz-option { display: flex; align-items: center; gap: .4rem; border: 1px solid #cbd7e2; padding: .45rem .65rem; border-radius: 9px; color: #38536c; font-size: .9rem; }
     .quiz-option input { width: 1rem; height: 1rem; accent-color: #163a5f; }
+    .midterm-picker { width: 100%; border: 1px solid #d9e2ea; border-radius: 12px; padding: 0 .75rem .75rem; }
+    .midterm-picker > summary { cursor: pointer; padding: .75rem .1rem; font-weight: 750; color: #163a5f; }
+    .midterm-picker .quiz-presets { margin: .25rem 0 .7rem; }
+    .midterm-week-options { display: flex; flex-wrap: wrap; gap: .55rem; }
     .quiz-question { border-top: 1px solid #d9e2ea; margin-top: 1rem; padding-top: 1rem; }
     .quiz-progress { color: #52697f; font-size: .88rem; margin: 0 0 .35rem; }
     .quiz-prompt { font-size: 1.25rem; font-weight: 750; margin: 0 0 .85rem; }
@@ -59,6 +63,10 @@
     .week-group { background: #fff; border: 1px solid #d9e2ea; border-radius: 16px; padding: 0 1rem 1rem; box-shadow: 0 3px 10px rgba(22, 58, 95, .05); }
     .week-group summary { display: flex; align-items: baseline; gap: .75rem; padding: 1rem .15rem; color: #163a5f; cursor: pointer; font-size: 1.18rem; font-weight: 800; }
     .week-group summary span { color: #6a8094; font-size: .86rem; font-weight: 400; }
+    .midterm-group { padding-bottom: 0; }
+    .midterm-group[open] { padding-bottom: 1rem; }
+    .midterm-weeks { display: grid; gap: .75rem; }
+    .midterm-weeks .week-group { box-shadow: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 1rem; }
     .card { width: 100%; min-height: 150px; padding: 1.1rem; text-align: left; background: white; border: 1px solid #d9e2ea; border-radius: 16px; color: inherit; box-shadow: 0 3px 10px rgba(22, 58, 95, .05); transition: transform .15s, box-shadow .15s, border-color .15s; }
     .card:hover, .card:focus-visible { border-color: #e0ad34; box-shadow: 0 9px 20px rgba(22, 58, 95, .13); transform: translateY(-2px); outline: none; }
@@ -123,13 +131,6 @@
         <p>先選要考的課程段落，再用中文提示回想德文單字。</p>
         <div class="quiz-presets" id="quizPresets" aria-label="快速勾選課程內容">
           <span>快速勾選：</span>
-          <button class="button secondary" type="button" data-preset="week1">第一週</button>
-          <button class="button secondary" type="button" data-preset="week2">第二週</button>
-          <button class="button secondary" type="button" data-preset="week3">第三週</button>
-          <button class="button secondary" type="button" data-preset="week4">第四週</button>
-          <button class="button secondary" type="button" data-preset="week5">第五週</button>
-          <button class="button secondary" type="button" data-preset="week6">第六週</button>
-          <button class="button secondary" type="button" data-preset="week7">第七週</button>
           <button class="button secondary" type="button" data-preset="week9">第九週</button>
           <button class="button secondary" type="button" data-preset="week10">第十週</button>
           <button class="button secondary" type="button" data-preset="week11">第十一週</button>
@@ -504,6 +505,7 @@
       { label: '第十週', sources: new Set(quizPresetsByWeek.week10) },
       { label: '第十一週', sources: new Set(quizPresetsByWeek.week11) }
     ];
+    const midtermWeekNames = new Set(['第一週', '第二週', '第三週', '第四週', '第五週', '第六週', '第七週', '第八週']);
     const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
     const quizWeekOptions = [
       { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
@@ -536,6 +538,7 @@
     function render() {
       const query = normalise(search.value);
       const visible = words.filter(word => Object.values(word).some(value => normalise(value).includes(query)));
+      const midtermWasOpen = grid.querySelector('.midterm-group')?.open ?? false;
       grid.replaceChildren();
       emptyState.hidden = true;
       clearButton.hidden = storedWords.length === 0;
@@ -549,6 +552,8 @@
         if (!grouped.has(week)) grouped.set(week, []);
         grouped.get(week).push(word);
       });
+      let midtermLibrary;
+      let midtermLibraryWeeks;
       grouped.forEach((sectionWords, week) => {
         const group = document.createElement('details');
         group.className = 'week-group';
@@ -565,7 +570,20 @@
         cards.append(card);
         });
         group.append(heading, cards);
-        grid.append(group);
+        if (midtermWeekNames.has(week)) {
+          if (!midtermLibrary) {
+            midtermLibrary = document.createElement('details');
+            midtermLibrary.className = 'week-group midterm-group';
+            midtermLibrary.open = Boolean(query) || midtermWasOpen;
+            const summary = document.createElement('summary');
+            summary.innerHTML = '期中考範圍（第一至八週）<span>依週次展開</span>';
+            midtermLibraryWeeks = document.createElement('div');
+            midtermLibraryWeeks.className = 'midterm-weeks';
+            midtermLibrary.append(summary, midtermLibraryWeeks);
+            grid.append(midtermLibrary);
+          }
+          midtermLibraryWeeks.append(group);
+        } else grid.append(group);
       });
     }
 
@@ -595,18 +613,40 @@
       return option ? option.sources.has(word.source) : !knownQuizSources.has(word.source);
     }
 
+    let quizOptionsInitialized = false;
     function renderQuizOptions() {
       const previousSelection = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
+      const midtermWasOpen = quizOptions.querySelector('.midterm-picker')?.open ?? false;
       quizOptions.replaceChildren();
+      const midterm = document.createElement('details');
+      midterm.className = 'midterm-picker';
+      midterm.open = midtermWasOpen;
+      const heading = document.createElement('summary');
+      heading.textContent = '期中考範圍（第一至八週）';
+      const shortcuts = document.createElement('div');
+      shortcuts.className = 'quiz-presets';
+      shortcuts.innerHTML = `<button class="button secondary" type="button" data-preset="week1">第一週</button>
+          <button class="button secondary" type="button" data-preset="week2">第二週</button>
+          <button class="button secondary" type="button" data-preset="week3">第三週</button>
+          <button class="button secondary" type="button" data-preset="week4">第四週</button>
+          <button class="button secondary" type="button" data-preset="week5">第五週</button>
+          <button class="button secondary" type="button" data-preset="week6">第六週</button>
+          <button class="button secondary" type="button" data-preset="week7">第七週</button>`;
+      const midtermChoices = document.createElement('div');
+      midtermChoices.className = 'midterm-week-options';
+      midterm.append(heading, shortcuts, midtermChoices);
       quizWeeks().forEach(week => {
         const label = document.createElement('label');
         label.className = 'quiz-option';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox'; checkbox.value = week;
-        checkbox.checked = previousSelection.size ? previousSelection.has(week) : true;
+        checkbox.checked = quizOptionsInitialized ? previousSelection.has(week) : week === '第十週';
         label.append(checkbox, document.createTextNode(week));
-        quizOptions.append(label);
+        if (midtermWeekNames.has(week)) midtermChoices.append(label);
+        else quizOptions.append(label);
       });
+      if (midtermChoices.childElementCount) quizOptions.prepend(midterm);
+      quizOptionsInitialized = true;
     }
 
     function applyQuizPreset(preset) {
@@ -728,7 +768,7 @@
       detailWrap.hidden = true;
       selectedWord = null;
       if (!card) return;
-      card.closest('details')?.setAttribute('open', '');
+      for (let parent = card.parentElement?.closest('details'); parent; parent = parent.parentElement?.closest('details')) parent.open = true;
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       card.focus({ preventScroll: true });
     }
@@ -808,11 +848,13 @@
       storedWords.splice(0, storedWords.length); words = [...builtInWords]; quizWords = []; quizQuestion.hidden = true; localStorage.removeItem(storageKey); render();
     });
     document.querySelector('#startQuiz').addEventListener('click', startQuiz);
-    quizPresets.addEventListener('click', event => {
+    function handleQuizPresetClick(event) {
       const preset = event.target.dataset.preset;
       if (!preset) return;
       applyQuizPreset(preset);
-    });
+    }
+    quizPresets.addEventListener('click', handleQuizPresetClick);
+    quizOptions.addEventListener('click', handleQuizPresetClick);
     document.querySelector('#answerForm').addEventListener('submit', checkAnswer);
     document.querySelector('#closeDetail').addEventListener('click', closeDetail);
     detailWrap.addEventListener('click', event => { if (event.target === detailWrap) closeDetail(); });
