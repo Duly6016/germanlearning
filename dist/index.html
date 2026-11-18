@@ -71,6 +71,7 @@
     .card { width: 100%; min-height: 150px; padding: 1.1rem; text-align: left; background: white; border: 1px solid #d9e2ea; border-radius: 16px; color: inherit; box-shadow: 0 3px 10px rgba(22, 58, 95, .05); transition: transform .15s, box-shadow .15s, border-color .15s; }
     .card:hover, .card:focus-visible { border-color: #e0ad34; box-shadow: 0 9px 20px rgba(22, 58, 95, .13); transform: translateY(-2px); outline: none; }
     .article { color: #af3d3d; font-weight: 800; font-size: .9rem; min-height: 1.25rem; }
+    .article:empty { display: none; }
     .word { display: block; font-size: 1.42rem; font-weight: 800; margin: .3rem 0 .45rem; overflow-wrap: anywhere; }
     .translation { color: #52697f; line-height: 1.5; }
     .tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .8rem; }
@@ -524,7 +525,7 @@
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
-    const quizAnswer = word => word.photoAnswer || (countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word);
+    const quizAnswer = word => word.photoAnswer ? word.photoAnswer.split(',').slice(1).join(',').trim() : (countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word);
     const makeRecord = row => ({
       gender: text(row['性別(名詞)'] ?? row['性別／冠詞'] ?? row['性別']),
       word: text(row['單字'] ?? row['德文'] ?? row['Word']),
@@ -565,7 +566,7 @@
         sectionWords.forEach(word => {
         const card = document.createElement('button');
         card.type = 'button'; card.className = 'card'; card.id = `word-card-${wordKey(word)}`;
-        card.innerHTML = `<span class="article">${escapeHtml(articleLabel(word))}</span><span class="word">${escapeHtml(word.word)}</span><span class="translation">${escapeHtml(word.meaning || '未提供中文翻譯')}</span><span class="tags">${word.plural ? `<span class="tag">複數：${escapeHtml(word.plural)}</span>` : ''}${word.part ? `<span class="tag">${escapeHtml(word.part)}</span>` : ''}</span>`;
+        card.innerHTML = `<span class="article">${word.photoAnswer ? '' : escapeHtml(articleLabel(word))}</span><span class="word">${escapeHtml(word.photoAnswer || word.word)}</span><span class="translation">${escapeHtml(word.meaning || '未提供中文翻譯')}</span><span class="tags">${word.photoAnswer ? '' : word.plural ? `<span class="tag">複數：${escapeHtml(word.plural)}</span>` : ''}${word.part ? `<span class="tag">${escapeHtml(word.part)}</span>` : ''}</span>`;
         card.addEventListener('click', () => openDetail(word));
         cards.append(card);
         });
@@ -673,7 +674,8 @@
       document.querySelector('#quizProgress').textContent = quizRound === 1
         ? `第一輪｜第 ${quizIndex + 1}／${quizWords.length} 題　目前答對 ${quizScore} 題`
         : `第一輪答對 ${quizScore}／${firstRoundTotal} 題｜複習第 ${quizRound - 1} 輪：第 ${quizIndex + 1}／${quizWords.length} 題`;
-      document.querySelector('#quizPrompt').textContent = word.photoAnswer ? `「${word.meaning || word.word}」：請照圖卡默寫冠詞、單字和逗點後的變化。` : `「${word.meaning || word.word}」的德文是？`;
+      document.querySelector('#quizPrompt').textContent = word.photoAnswer ? `「${word.meaning || word.word}」　${word.photoAnswer.split(',')[0]}, ____` : `「${word.meaning || word.word}」的德文是？`;
+      answerInput.placeholder = word.photoAnswer ? '只填逗點後的變化，例如 -n 或 x / -e' : '輸入德文單字';
       document.querySelector('#quizFeedback').textContent = '';
       document.querySelector('#quizFeedback').className = 'quiz-feedback';
       answerInput.hidden = false; answerInput.value = ''; answerInput.disabled = false;
@@ -711,7 +713,7 @@
       const feedback = document.querySelector('#quizFeedback');
       feedback.replaceChildren();
       const answerLink = document.createElement('button');
-      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = expectedAnswer;
+      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = word.photoAnswer || expectedAnswer;
       answerLink.addEventListener('click', () => openDetail(word));
       if (isCorrect) {
         quizScore += 1; feedback.classList.add('correct');
@@ -775,13 +777,13 @@
 
     function openDetail(word) {
       selectedWord = word;
-      document.querySelector('#detailArticle').textContent = articleLabel(word);
-      document.querySelector('#detailWord').textContent = word.word;
+      document.querySelector('#detailArticle').textContent = word.photoAnswer ? '' : articleLabel(word);
+      document.querySelector('#detailWord').textContent = word.photoAnswer || word.word;
       document.querySelector('#detailMeaning').textContent = word.meaning || '未提供中文翻譯';
       document.querySelector('#detailGender').textContent = articleLabel(word) || '—';
       document.querySelector('#detailPlural').textContent = valueOrDash(word.plural);
       document.querySelector('#detailPhotoAnswerLabel').hidden = document.querySelector('#detailPhotoAnswer').hidden = !word.photoAnswer;
-      document.querySelector('#detailPhotoAnswer').textContent = word.photoAnswer ? `圖卡默寫：${word.photoAnswer}` : '';
+      document.querySelector('#detailPhotoAnswer').textContent = word.photoAnswer ? `逗點後默寫：${quizAnswer(word)}` : '';
       document.querySelector('#detailPart').textContent = valueOrDash(word.part);
       const verbFormsLabel = document.querySelector('#detailVerbFormsLabel');
       const verbFormsValue = document.querySelector('#detailVerbForms');
