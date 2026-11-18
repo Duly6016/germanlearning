@@ -122,7 +122,7 @@
       <summary>考古題</summary>
       <div class="panel-content">
         <p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-        <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button></div>
+        <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button> <button class="button secondary" id="openPastExam6" type="button">考古題 6｜第十週（6 題）</button></div>
         <form id="pastExamForm" hidden></form>
       </div>
     </details>
@@ -481,6 +481,14 @@
       ['數字 N', '0, 1, 2, 3, … sind _____.', 'Zahlen'],
       ['零 N（注意否定冠詞）', 'Das ist _____.', 'keine Null']
     ].map(([hint,question,answer], index) => ({ id:index + 1, hint, question, answer }));
+    const pastExam6 = [
+      ['麵包 N（您有麵包嗎？表事實）', 'Haben Sie _____?', 'Brot', 16],
+      ['馬鈴薯 N（一公斤馬鈴薯；用複數）', 'Ein Kilo _____, bitte!', 'Kartoffeln', 16],
+      ['優格 N（平日習慣，不指份量）', 'Essen Sie _____?', 'Jogurt', 16],
+      ['洋蔥 N（此處用複數）', 'Haben Sie _____?', 'Zwiebeln', 16],
+      ['魚 N（平日習慣，不指數量）', 'Ich esse _____.', 'keinen Fisch', 18],
+      ['架子 N（指定眼前的架子）', 'Wo ist _____?', 'das Regal', 18]
+    ].map(([hint, question, answer, points], index) => ({ id: index + 1, hint, question, answer, points }));
     let activePastExam = pastExam1;
 
     const text = value => String(value ?? '').trim();
@@ -755,10 +763,12 @@
     document.querySelector('#openPastExam3').addEventListener('click', () => openPastExam(pastExam3));
     document.querySelector('#openPastExam4').addEventListener('click', () => openPastExam(pastExam4));
     document.querySelector('#openPastExam5').addEventListener('click', () => openPastExam(pastExam5));
+    document.querySelector('#openPastExam6').addEventListener('click', () => openPastExam(pastExam6));
     document.querySelector('#pastExamForm').addEventListener('submit', event => {
-      event.preventDefault(); const form = event.currentTarget; let score = 0;
-      const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) score += 1; return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
-      document.querySelector('#pastExamResult').innerHTML = `<strong>總分：${score} / ${activePastExam.length}</strong>${rows}`;
+      event.preventDefault(); const form = event.currentTarget; let score = 0; let pointsEarned = 0;
+      const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) { score += 1; pointsEarned += item.points || 0; } return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
+      const totalPoints = activePastExam.reduce((total, item) => total + (item.points || 0), 0);
+      document.querySelector('#pastExamResult').innerHTML = `<strong>${totalPoints ? `總分：${pointsEarned} / ${totalPoints} 分｜` : ''}答對：${score} / ${activePastExam.length} 題</strong>${rows}`;
     });
     document.querySelector('#pastExamForm').addEventListener('click', event => { if (event.target.id === 'retryPastExam') { event.preventDefault(); openPastExam(activePastExam); } });
 
