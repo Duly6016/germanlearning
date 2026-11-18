@@ -135,6 +135,9 @@
           <button class="button secondary" type="button" data-preset="week9">第九週</button>
           <button class="button secondary" type="button" data-preset="week10">第十週</button>
           <button class="button secondary" type="button" data-preset="week11">第十一週</button>
+          <button class="button secondary" type="button" data-preset="photo12">單字卡 1–2</button>
+          <button class="button secondary" type="button" data-preset="photo34">單字卡 3–4</button>
+          <button class="button secondary" type="button" data-preset="photo56">單字卡 5–6</button>
           <button class="button secondary" type="button" data-preset="all">全部</button>
           <button class="button secondary" type="button" data-preset="none">取消全選</button>
         </div>
@@ -530,10 +533,13 @@
       { label: '第七週', sources: new Set(quizPresetsByWeek.week7) },
       { label: '第九週', sources: new Set(quizPresetsByWeek.week9) },
       { label: '第十週', sources: new Set(quizPresetsByWeek.week10) },
-      { label: '第十一週', sources: new Set(quizPresetsByWeek.week11) }
+      { label: '第十一週', sources: new Set(quizPresetsByWeek.week11) },
+      { label: '單字卡 1–2', sources: new Set(['補充單字卡 1–2']) },
+      { label: '單字卡 3–4', sources: new Set(['補充單字卡 3–4']) },
+      { label: '單字卡 5–6', sources: new Set(['補充單字卡 5–6']) }
     ];
     const knownQuizSources = new Set(quizWeekOptions.flatMap(option => [...option.sources]));
-    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週', week7: '第七週', week9: '第九週', week10: '第十週', week11: '第十一週' };
+    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週', week7: '第七週', week9: '第九週', week10: '第十週', week11: '第十一週', photo12: '單字卡 1–2', photo34: '單字卡 3–4', photo56: '單字卡 5–6' };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
