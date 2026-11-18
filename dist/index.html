@@ -525,7 +525,7 @@
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
-    const quizAnswer = word => word.photoAnswer ? word.photoAnswer.split(',').slice(1).join(',').trim() : (countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word);
+    const quizAnswer = word => word.photoAnswer ? (word.quizMode === 'spell' ? word.photoAnswer.split(',')[0] : word.photoAnswer.split(',').slice(1).join(',').trim()) : (countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word);
     const makeRecord = row => ({
       gender: text(row['性別(名詞)'] ?? row['性別／冠詞'] ?? row['性別']),
       word: text(row['單字'] ?? row['德文'] ?? row['Word']),
@@ -662,7 +662,7 @@
 
     function startQuiz() {
       const selectedWeeks = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
-      quizWords = shuffle([...new Map(words.filter(word => [...selectedWeeks].some(week => wordMatchesQuizWeek(word, week))).map(word => [normalise(word.word), word])).values()]);
+      quizWords = shuffle([...new Map(words.filter(word => [...selectedWeeks].some(week => wordMatchesQuizWeek(word, week))).map(word => [normalise(word.word), word])).values()]).flatMap(word => word.photoAnswer ? [{ ...word, quizMode: 'spell' }, { ...word, quizMode: 'plural' }] : [word]);
       if (!quizWords.length) { alert('請至少選擇一個課程段落。'); return; }
       quizIndex = 0; quizScore = 0; firstRoundTotal = quizWords.length; quizRound = 1; retryWords = []; quizAnswered = false;
       quizQuestion.hidden = false;
@@ -674,8 +674,8 @@
       document.querySelector('#quizProgress').textContent = quizRound === 1
         ? `第一輪｜第 ${quizIndex + 1}／${quizWords.length} 題　目前答對 ${quizScore} 題`
         : `第一輪答對 ${quizScore}／${firstRoundTotal} 題｜複習第 ${quizRound - 1} 輪：第 ${quizIndex + 1}／${quizWords.length} 題`;
-      document.querySelector('#quizPrompt').textContent = word.photoAnswer ? `「${word.meaning || word.word}」　${word.photoAnswer.split(',')[0]}, ____` : `「${word.meaning || word.word}」的德文是？`;
-      answerInput.placeholder = word.photoAnswer ? '只填逗點後的變化，例如 -n 或 x / -e' : '輸入德文單字';
+      document.querySelector('#quizPrompt').textContent = word.photoAnswer ? (word.quizMode === 'spell' ? `「${word.meaning || word.word}」的德文是？請寫冠詞＋單字。` : `「${word.meaning || word.word}」　${word.photoAnswer.split(',')[0]}, ____`) : `「${word.meaning || word.word}」的德文是？`;
+      answerInput.placeholder = word.photoAnswer ? (word.quizMode === 'spell' ? '例如 die Tomate' : '只填逗點後的變化，例如 -n 或 x / -e') : '輸入德文單字';
       document.querySelector('#quizFeedback').textContent = '';
       document.querySelector('#quizFeedback').className = 'quiz-feedback';
       answerInput.hidden = false; answerInput.value = ''; answerInput.disabled = false;
@@ -713,7 +713,7 @@
       const feedback = document.querySelector('#quizFeedback');
       feedback.replaceChildren();
       const answerLink = document.createElement('button');
-      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = word.photoAnswer || expectedAnswer;
+      answerLink.type = 'button'; answerLink.className = 'word-link'; answerLink.textContent = expectedAnswer;
       answerLink.addEventListener('click', () => openDetail(word));
       if (isCorrect) {
         quizScore += 1; feedback.classList.add('correct');
