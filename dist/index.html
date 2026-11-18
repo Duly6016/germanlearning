@@ -100,12 +100,12 @@
     <details class="collapsible-panel study-plan" open>
       <summary id="studyPlanTitle">本週複習路線</summary>
       <div class="panel-content">
-        <p>第七週複習第二課 <strong>D3</strong>：本週小考聚焦個人資料、年齡、居住地與婚姻狀況。</p>
+        <p>第十週範圍是第三課 <strong>B2–B4</strong>，另含補充單字卡第 3、4 張；第九週可選第一段到 A2 與補充單字卡第 1、2 張。</p>
         <div class="study-steps">
-          <div class="study-step"><strong>第 1 段｜基本資料</strong>記住 <em>das Alter</em>、<em>die Nummer</em>、<em>der Wohnort</em>、<em>der Geburtsort</em>。</div>
-          <div class="study-step"><strong>第 2 段｜狀態與問句</strong>練習 <em>ledig</em>、<em>verheiratet</em>、<em>verwitwet</em>、<em>geboren</em>、<em>wo</em>。</div>
-          <div class="study-step"><strong>第 3 段｜整合練習</strong>把 <em>der Familienstand</em>、<em>liegen</em> 和自己的個人資料放進完整句子。</div>
-          <div class="study-step"><strong>考前小考</strong>選「第七週」只會考第二課 <strong>D3</strong>；其他後續單字會維持保留、等新的範圍再納入。</div>
+          <div class="study-step"><strong>第 1 段｜第九週回顧</strong>第三課 Fotohörgeschichte 到 A2，搭配補充單字卡第 1、2 張。</div>
+          <div class="study-step"><strong>第 2 段｜第十週課本</strong>練習第三課 B2、B3、B4 的食物與購物單字。</div>
+          <div class="study-step"><strong>第 3 段｜補充圖卡</strong>第 3、4 張跟第十週一起考；第 5、6 張納入第十一週。</div>
+          <div class="study-step"><strong>考前小考</strong>按「第九週」或「第十週」快速勾選；重複出現的單字只考一次。</div>
         </div>
       </div>
     </details>
@@ -130,6 +130,9 @@
           <button class="button secondary" type="button" data-preset="week5">第五週</button>
           <button class="button secondary" type="button" data-preset="week6">第六週</button>
           <button class="button secondary" type="button" data-preset="week7">第七週</button>
+          <button class="button secondary" type="button" data-preset="week9">第九週</button>
+          <button class="button secondary" type="button" data-preset="week10">第十週</button>
+          <button class="button secondary" type="button" data-preset="week11">第十一週</button>
           <button class="button secondary" type="button" data-preset="all">全部</button>
           <button class="button secondary" type="button" data-preset="none">取消全選</button>
         </div>
@@ -163,6 +166,7 @@
       <dl>
         <dt>性別／冠詞</dt><dd id="detailGender">—</dd>
         <dt>複數形</dt><dd id="detailPlural">—</dd>
+        <dt id="detailPhotoAnswerLabel" hidden>圖卡默寫</dt><dd id="detailPhotoAnswer" hidden></dd>
         <dt>詞性</dt><dd id="detailPart">—</dd>
         <dt id="detailVerbFormsLabel" hidden>主詞變化</dt><dd id="detailVerbForms" hidden></dd>
         <dt>音節數</dt><dd id="detailSyllables">—</dd>
@@ -263,7 +267,119 @@
       ['die', 'Null', 'Nullen', 1, '零', '名詞', 'Lektion2 - D1'], ['die', 'Zahl', 'Zahlen', 1, '數字', '名詞', 'Lektion2 - D1'], ['', 'alt', '', 1, '老的', '形容詞', 'Lektion2 - D3'], ['', 'wo', '', 1, '哪裡', '疑問副詞', 'Lektion2 - D3'], ['das', 'Alter', '', 2, '年紀', '名詞', 'Lektion2 - D3'], ['', 'ledig', '', 2, '單身的', '形容詞', 'Lektion2 - D3'], ['', 'liegen', '', 2, '位於', '動詞', 'Lektion2 - D3'], ['die', 'Nummer', 'Nummern', 2, '號碼', '名詞', 'Lektion2 - D3'], ['der', 'Wohnort', 'Wohnorte', 2, '居住地', '名詞', 'Lektion2 - D3'], ['', 'geboren', '', 3, '出生的', '形容詞', 'Lektion2 - D3'], ['der', 'Geburtsort', 'Geburtsorte', 3, '出生地', '名詞', 'Lektion2 - D3'], ['', 'verwitwet', '', 3, '鰥寡的', '形容詞', 'Lektion2 - D3'], ['', 'verheiratet', '', 4, '已婚的', '形容詞', 'Lektion2 - D3'], ['der', 'Familienstand', '', 5, '家庭狀況', '名詞', 'Lektion2 - D3'],
       ['die', 'Hauptstadt', 'Hauptstädte', 2, '首都', '名詞', 'Lektion2 - E1'], ['der', 'Arzt', 'Ärzte', 1, '男醫生', '名詞', 'Lektion2 - E2'], ['', 'hier', '', 1, '這裡', '副詞', 'Lektion2 - E2'], ['', 'schon', '', 1, '已經', '副詞', 'Lektion2 - E2'], ['', 'aber', '', 2, '但是', '連詞', 'Lektion2 - E2'], ['', 'also', '', 2, '如此', '助詞', 'Lektion2 - E2'], ['', 'kennen', '', 2, '認識', '動詞', 'Lektion2 - E2'], ['', 'lange', '', 2, '很久', '副詞', 'Lektion2 - E2'], ['der', 'Partner', 'Partner', 2, '夥伴、伴侶', '名詞', 'Lektion2 - E2'], ['', 'zurzeit', '', 2, '目前', '副詞', 'Lektion2 - E2'], ['die', 'Partnerin', 'Partnerinnen', 3, '女夥伴、女伴侶', '名詞', 'Lektion2 - E2'], ['die', 'Polizei', '', 3, '警察', '名詞', 'Lektion2 - E2']
     ].map(([gender, word, plural, syllables, meaning, part, source]) => ({ gender, word, plural, syllables, meaning, part, source }));
-    const builtInWords = [...lessonOneWords, ...lessonTwoWords];
+    const lessonThreeWords = [["das","Ei","","1","蛋","名詞","Lektion3 - 1"],
+      ["das","Mehl","","1","麵粉","名詞","Lektion3 - 1"],
+      ["die","Milch","","1","牛奶","名詞","Lektion3 - 1"],
+      ["die","Butter","","2","奶油","名詞","Lektion3 - 1"],
+      ["der","Zucker","","2","糖","名詞","Lektion3 - 1"],
+      ["die","Banane","Bananen","3","香蕉","名詞","Lektion3 - 1"],
+      ["der","Pfannkuchen","Pfannkuchen","3","薄餅","名詞","Lektion3 - 1"],
+      ["die","Schokolade","","4","巧克力","名詞","Lektion3 - 1"],
+      ["","brauchen","","2","需要","動詞","Lektion3 - 2"],
+      ["","kaufen","","2","買","動詞","Lektion3 - 2"],
+      ["","dann","","1","那麼就","副詞","Lektion3 - 3"],
+      ["der","Euro","","2","歐元","名詞","Lektion3 - 3"],
+      ["","helfen","","2","幫忙","動詞","Lektion3 - 3"],
+      ["der","Hunger","","2","飢餓","名詞","Lektion3 - 3"],
+      ["die","Welt","Welten","1","世界","名詞","Lektion3 - 4"],
+      ["","ein-","","1","一個","不定冠詞","Lektion3 - A1"],
+      ["","kein-","","1","不是一個","不定代詞","Lektion3 - A1"],
+      ["der","Saft","Säfte","1","果汁","名詞","Lektion3 - A2"],
+      ["der","Apfel","Äpfel","2","蘋果","名詞","Lektion3 - A2"],
+      ["die","Birne","Birnen","2","梨子","名詞","Lektion3 - A2"],
+      ["das","Brötchen","Brötchen","2","小麵包","名詞","Lektion3 - A2"],
+      ["der","Kaffee","Kaffees","2","咖啡","名詞","Lektion3 - A2"],
+      ["der","Kuchen","Kuchen","2","蛋糕","名詞","Lektion3 - A2"],
+      ["das","Würstchen","Würstchen","2","小香腸","名詞","Lektion3 - A2"],
+      ["die","Orange","Orangen","3","柳橙","名詞","Lektion3 - A2"],
+      ["die","Tomate","Tomaten","3","蕃茄","名詞","Lektion3 - A2"],
+      ["das","Brot","Brote","1","麵包","名詞","Lektion3 - B2"],
+      ["der","Fisch","Fische","1","魚","名詞","Lektion3 - B3"],
+      ["der/das","Joghurt","Joghurts","2","優格","名詞","Lektion3 - B3"],
+      ["die","Zwiebel","Zwiebeln","2","洋蔥","名詞","Lektion3 - B3"],
+      ["die","Kartoffel","Kartoffeln","3","馬鈴薯","名詞","Lektion3 - B3"],
+      ["das","Regal","Regale","2","架子","名詞","Lektion3 - B4"],
+      ["das","Obst","","1","水果","名詞","Lektion3 - C1"],
+      ["das","Salz","","1","鹽巴","名詞","Lektion3 - C1"],
+      ["der","Tee","Tees","1","茶","名詞","Lektion3 - C1"],
+      ["der","Käse","","2","乳酪","名詞","Lektion3 - C1"],
+      ["das","Gemüse","Gemüse/ x","3","蔬菜","名詞","Lektion3 - C1"],
+      ["das","Bier","Biere","1","啤酒","名詞","Lektion3 - C2"],
+      ["das","Fleisch","","1","肉","名詞","Lektion3 - C2"],
+      ["der","Reis","","1","米飯","名詞","Lektion3 - C2"],
+      ["der","Wein","Weine","1","葡萄酒","名詞","Lektion3 - C2"],
+      ["das","Wasser","","2","水","名詞","Lektion3 - C2"],
+      ["das","Mineralwasser","","5","礦泉水","名詞","Lektion3 - C2"],
+      ["der","Cent","","1","分（金錢單位）","名詞","Lektion3 - D1"],
+      ["der","Preis","Preise","1","價格","名詞","Lektion3 - D1"],
+      ["das","Gramm","","1","公克","名詞","Lektion3 - D3"],
+      ["das","Pfund","Pfunde","1","磅","名詞","Lektion3 - D3"],
+      ["die","Wurst","Würste","1","香腸","名詞","Lektion3 - D3"],
+      ["das","Öl","Öle","1","油","名詞","Lektion3 - D3"],
+      ["die","Dose","Dosen","2","罐","名詞","Lektion3 - D3"],
+      ["die","Flasche","Flaschen","2","瓶子","名詞","Lektion3 - D3"],
+      ["das","Hackfleisch","","2","絞肉","名詞","Lektion3 - D3"],
+      ["","kosten","","2","價值（多少錢）","動詞","Lektion3 - D3"],
+      ["der","Liter","Liter","2","公升","名詞","Lektion3 - D3"],
+      ["der","Prospekt","Prospekte","2","價目表","名詞","Lektion3 - D3"],
+      ["die","Sahne","","2","鮮奶油","名詞","Lektion3 - D3"],
+      ["","wie viel","","2","多少","疑問副詞","Lektion3 - D3"],
+      ["die","Abteilung","Abteilungen","3","部門","名詞","Lektion3 - D3"],
+      ["das","Kilogramm","","3","公斤","名詞","Lektion3 - D3"],
+      ["das","Lebensmittel","Lebensmittel","4","生活必需品","名詞","Lektion3 - D3"],
+      ["das","Sonderangebot","Sonderangebote","5","特價（品）","名詞","Lektion3 - D3"],
+      ["die","Mensa","Mensen","2","學生餐廳","名詞","Lektion3 - E1"],
+      ["das","Restaurant","Restaurants","3","餐廳","名詞","Lektion3 - E1"],
+      ["der","Durst","","1","口渴","名詞","Lektion3 - E2"],
+      ["das","Glas","Gläser","1","玻璃杯","名詞","Lektion3 - E2"],
+      ["das","Steak","Steaks","1","牛排","名詞","Lektion3 - E2"],
+      ["das/die","Cola","Colas","2","可樂","名詞","Lektion3 - E2"],
+      ["","essen","","2","吃","動詞","Lektion3 - E2"],
+      ["das","Hähnchen","Hähnchen","2","烤雞","名詞","Lektion3 - E2"],
+      ["die","Pizza","Pizzen","2","披薩","名詞","Lektion3 - E2"],
+      ["die","Pommes","","2","薯條","名詞","Lektion3 - E2"],
+      ["die","Pommes frites","","2","薯條","名詞","Lektion3 - E2"],
+      ["der","Salat","Salate","2","沙拉","名詞","Lektion3 - E2"],
+      ["die","Soße","Soßen","2","醬汁","名詞","Lektion3 - E2"],
+      ["","für","","1","為了","介詞","Lektion3 - E3"],
+      ["","ganz","","1","完全","形容詞","Lektion3 - E3"],
+      ["","groß","","1","大的","形容詞","Lektion3 - E3"],
+      ["der","Tag","Tage","1","日子","名詞","Lektion3 - E3"],
+      ["","einfach","","2","簡單的","形容詞","Lektion3 - E3"],
+      ["das","Essen","Essen","2","食物","名詞","Lektion3 - E3"],
+      ["","kochen","","2","煮菜","動詞","Lektion3 - E3"],
+      ["","Lieblings-","","2","最喜愛的（事物）","名詞前綴字","Lektion3 - E3"],
+      ["der","Pfeffer","","2","胡椒","名詞","Lektion3 - E3"],
+      ["","reichen","","2","足夠","動詞","Lektion3 - E3"],
+      ["das","Rezept","Rezepte","2","食譜","名詞","Lektion3 - E3"],
+      ["","schmecken","","2","嚐起來","動詞","Lektion3 - E3"],
+      ["die","Suppe","Suppen","2","湯","名詞","Lektion3 - E3"],
+      ["","teuer","","2","昂貴的","形容詞","Lektion3 - E3"],
+      ["","trinken","","2","喝","動詞","Lektion3 - E3"],
+      ["","typisch","","2","典型的","形容詞","Lektion3 - E3"],
+      ["die","Portion","Portionen","3","一份","名詞","Lektion3 - E3"],
+      ["","studieren","","3","讀大學","動詞","Lektion3 - E3"],
+      ["","gern(e)","","1","樂意","副詞","Lektion3 - E4"],
+      ["das","Getränk","Getränke","2","飲料","名詞","Lektion3 - E4"]]
+      .map(([gender, word, plural, syllables, meaning, part, source]) => ({ gender, word, plural, syllables, meaning, part, source }));
+    const photoCardGroups = [["Tomate","Brot","Orange","Milch","Kaffee","Ei"],
+      ["Kartoffel","Schokolade","Kuchen","Saft","Apfel","Joghurt"],
+      ["Fleisch","Salat","Käse","Obst","Würstchen","Fisch"],
+      ["Brötchen","Birne","Gemüse","Banane","Pfannkuchen","Wurst"],
+      ["Tee","Zucker","Öl","Bier","Zwiebel","Sahne"],
+      ["Kiwi","Wein","Reis","Mehl","Salz","Wasser"]];
+    const photoCardAnswers = [["die Tomate, -n","das Brot, x / -e","die Orange, -n","die Milch, x","der Kaffee, x / -s","das Ei, -er"],
+      ["die Kartoffel, -n","die Schokolade, x / -n","der Kuchen, x / -","der Saft, x / Säfte","der Apfel, Äpfel","der Joghurt, x / -s"],
+      ["das Fleisch, x","der Salat, x / -e","der Käse, x","das Obst, x","das Würstchen, -","der Fisch, x / -e"],
+      ["das Brötchen, -","die Birne, -n","das Gemüse, x","die Banane, -n","der Pfannkuchen, x / -","die Wurst, x / Würste"],
+      ["der Tee, x / -s","der Zucker, x","das Öl, -e / x","das Bier, x / -e","die Zwiebel, -n","die Sahne, x"],
+      ["die Kiwi, -s","der Wein, x / -e","der Reis, x","das Mehl, x","das Salz, x / -e","das Wasser, x"]];
+    const photoCardWords = photoCardGroups.flatMap((group, index) => group.map(name => {
+      const original = lessonThreeWords.find(item => item.word === name);
+      const word = original || { gender: 'die', word: 'Kiwi', plural: 'Kiwis', syllables: 2, meaning: '奇異果', part: '名詞' };
+      return { ...word, gender: photoCardAnswers[index][group.indexOf(name)].split(' ')[0], photoAnswer: photoCardAnswers[index][group.indexOf(name)], source: `補充單字卡 ${Math.floor(index / 2) * 2 + 1}–${Math.floor(index / 2) * 2 + 2}` };
+    }));
+    const builtInWords = [...lessonOneWords, ...lessonTwoWords, ...lessonThreeWords, ...photoCardWords];
     const storedWords = JSON.parse(localStorage.getItem(storageKey) || '[]');
     const irregularVerbConjugations = {
       'wissen': ['ich weiß', 'du weißt', 'er/sie/es weiß', 'wir wissen', 'ihr wisst', 'sie/Sie wissen'],
@@ -371,7 +487,10 @@
       week4: ['Lektion1 - E1', 'Lektion1 - E2', 'Lektion1 - 第二週小考（國名與語言）'],
       week5: ['Lektion2 - 1', 'Lektion2 - 3', 'Lektion2 - A1', 'Lektion2 - B1', 'Lektion2 - B2'],
       week6: ['Lektion2 - B3', 'Lektion2 - C1', 'Lektion2 - C3', 'Lektion2 - D1'],
-      week7: ['Lektion2 - D3']
+      week7: ['Lektion2 - D3'],
+      week9: ['Lektion3 - 1', 'Lektion3 - 2', 'Lektion3 - 3', 'Lektion3 - 4', 'Lektion3 - A1', 'Lektion3 - A2', '補充單字卡 1–2'],
+      week10: ['Lektion3 - B2', 'Lektion3 - B3', 'Lektion3 - B4', '補充單字卡 3–4'],
+      week11: ['補充單字卡 5–6']
     };
     const weekSourceGroups = [
       { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
@@ -380,7 +499,10 @@
       { label: '第四週', sources: new Set(['Lektion1 - E1', 'Lektion1 - E2']) },
       { label: '第五週', sources: new Set(quizPresetsByWeek.week5) },
       { label: '第六週', sources: new Set(quizPresetsByWeek.week6) },
-      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) }
+      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) },
+      { label: '第九週', sources: new Set(quizPresetsByWeek.week9) },
+      { label: '第十週', sources: new Set(quizPresetsByWeek.week10) },
+      { label: '第十一週', sources: new Set(quizPresetsByWeek.week11) }
     ];
     const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
     const quizWeekOptions = [
@@ -390,14 +512,17 @@
       { label: '第四週', sources: new Set(quizPresetsByWeek.week4) },
       { label: '第五週', sources: new Set(quizPresetsByWeek.week5) },
       { label: '第六週', sources: new Set(quizPresetsByWeek.week6) },
-      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) }
+      { label: '第七週', sources: new Set(quizPresetsByWeek.week7) },
+      { label: '第九週', sources: new Set(quizPresetsByWeek.week9) },
+      { label: '第十週', sources: new Set(quizPresetsByWeek.week10) },
+      { label: '第十一週', sources: new Set(quizPresetsByWeek.week11) }
     ];
     const knownQuizSources = new Set(quizWeekOptions.flatMap(option => [...option.sources]));
-    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週', week7: '第七週' };
+    const presetWeekLabels = { week1: '第一週', week2: '第二週', week3: '第三週', week4: '第四週', week5: '第五週', week6: '第六週', week7: '第七週', week9: '第九週', week10: '第十週', week11: '第十一週' };
     const countriesWithoutArticle = new Set(['China', 'Frankreich', 'Polen', 'Russland', 'Griechenland', 'Spanien', 'Italien', 'Großbritannien', 'Deutschland', 'Österreich', 'Belgien', 'Dänemark', 'Luxemburg', 'Portugal', 'Amerika']);
     const countriesWithArticle = new Set(['Schweiz', 'Türkei', 'Iran', 'Jemen', 'Sudan', 'USA']);
     const articleLabel = word => countriesWithoutArticle.has(text(word.word)) ? '無冠詞' : text(word.gender);
-    const quizAnswer = word => countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word;
+    const quizAnswer = word => word.photoAnswer || (countriesWithArticle.has(text(word.word)) ? `${articleLabel(word)} ${word.word}` : word.word);
     const makeRecord = row => ({
       gender: text(row['性別(名詞)'] ?? row['性別／冠詞'] ?? row['性別']),
       word: text(row['單字'] ?? row['德文'] ?? row['Word']),
@@ -496,7 +621,7 @@
 
     function startQuiz() {
       const selectedWeeks = new Set([...quizOptions.querySelectorAll('input:checked')].map(input => input.value));
-      quizWords = shuffle(words.filter(word => [...selectedWeeks].some(week => wordMatchesQuizWeek(word, week))));
+      quizWords = shuffle([...new Map(words.filter(word => [...selectedWeeks].some(week => wordMatchesQuizWeek(word, week))).map(word => [normalise(word.word), word])).values()]);
       if (!quizWords.length) { alert('請至少選擇一個課程段落。'); return; }
       quizIndex = 0; quizScore = 0; firstRoundTotal = quizWords.length; quizRound = 1; retryWords = []; quizAnswered = false;
       quizQuestion.hidden = false;
@@ -508,7 +633,7 @@
       document.querySelector('#quizProgress').textContent = quizRound === 1
         ? `第一輪｜第 ${quizIndex + 1}／${quizWords.length} 題　目前答對 ${quizScore} 題`
         : `第一輪答對 ${quizScore}／${firstRoundTotal} 題｜複習第 ${quizRound - 1} 輪：第 ${quizIndex + 1}／${quizWords.length} 題`;
-      document.querySelector('#quizPrompt').textContent = `「${word.meaning || word.word}」的德文是？`;
+      document.querySelector('#quizPrompt').textContent = word.photoAnswer ? `「${word.meaning || word.word}」：請照圖卡默寫冠詞、單字和逗點後的變化。` : `「${word.meaning || word.word}」的德文是？`;
       document.querySelector('#quizFeedback').textContent = '';
       document.querySelector('#quizFeedback').className = 'quiz-feedback';
       answerInput.hidden = false; answerInput.value = ''; answerInput.disabled = false;
@@ -542,7 +667,7 @@
       const word = quizWords[quizIndex];
       const expectedAnswer = quizAnswer(word);
       const answers = expectedAnswer.split('=').map(normalise);
-      const isCorrect = answers.includes(normalise(answerInput.value));
+      const isCorrect = word.photoAnswer ? answerInput.value.trim().replace(/\s*([,/])\s*/g, '$1').replace(/\s+/g, ' ') === expectedAnswer.replace(/\s*([,/])\s*/g, '$1').replace(/\s+/g, ' ') : answers.includes(normalise(answerInput.value));
       const feedback = document.querySelector('#quizFeedback');
       feedback.replaceChildren();
       const answerLink = document.createElement('button');
@@ -615,6 +740,8 @@
       document.querySelector('#detailMeaning').textContent = word.meaning || '未提供中文翻譯';
       document.querySelector('#detailGender').textContent = articleLabel(word) || '—';
       document.querySelector('#detailPlural').textContent = valueOrDash(word.plural);
+      document.querySelector('#detailPhotoAnswerLabel').hidden = document.querySelector('#detailPhotoAnswer').hidden = !word.photoAnswer;
+      document.querySelector('#detailPhotoAnswer').textContent = word.photoAnswer ? `圖卡默寫：${word.photoAnswer}` : '';
       document.querySelector('#detailPart').textContent = valueOrDash(word.part);
       const verbFormsLabel = document.querySelector('#detailVerbFormsLabel');
       const verbFormsValue = document.querySelector('#detailVerbForms');
