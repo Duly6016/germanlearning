@@ -379,9 +379,10 @@
     const photoCardWords = photoCardGroups.flatMap((group, index) => group.map(name => {
       const original = lessonThreeWords.find(item => item.word === name);
       const word = original || { gender: 'die', word: 'Kiwi', plural: 'Kiwis', syllables: 2, meaning: '奇異果', part: '名詞' };
-      return { ...word, gender: photoCardAnswers[index][group.indexOf(name)].split(' ')[0], photoAnswer: photoCardAnswers[index][group.indexOf(name)], source: `補充單字卡 ${Math.floor(index / 2) * 2 + 1}–${Math.floor(index / 2) * 2 + 2}` };
+      return { ...word, gender: photoCardAnswers[index][group.indexOf(name)].split(' ')[0], photoAnswer: photoCardAnswers[index][group.indexOf(name)], originalSource: original?.source || '', source: `補充單字卡 ${Math.floor(index / 2) * 2 + 1}–${Math.floor(index / 2) * 2 + 2}` };
     }));
-    const builtInWords = [...lessonOneWords, ...lessonTwoWords, ...lessonThreeWords, ...photoCardWords];
+    const photoNames = new Set(photoCardWords.map(word => word.word));
+    const builtInWords = [...lessonOneWords, ...lessonTwoWords, ...lessonThreeWords.filter(word => !photoNames.has(word.word)), ...photoCardWords];
     const storedWords = JSON.parse(localStorage.getItem(storageKey) || '[]');
     const irregularVerbConjugations = {
       'wissen': ['ich weiß', 'du weißt', 'er/sie/es weiß', 'wir wissen', 'ihr wisst', 'sie/Sie wissen'],
@@ -397,7 +398,10 @@
     const wordKey = word => `${String(word.source ?? '').trim().toLocaleLowerCase()}|${String(word.word ?? '').trim().toLocaleLowerCase()}`;
     const mergeWords = additions => {
       const merged = new Map(builtInWords.map(word => [wordKey(word), word]));
-      additions.forEach(word => merged.set(wordKey(word), word));
+      additions.forEach(word => {
+        if (photoNames.has(word.word) && String(word.source || '').startsWith('Lektion3 - ')) return;
+        merged.set(wordKey(word), word);
+      });
       return [...merged.values()].map(addIrregularConjugation);
     };
     let words = mergeWords(storedWords);
@@ -507,7 +511,7 @@
       { label: '第十一週', sources: new Set(quizPresetsByWeek.week11) }
     ];
     const midtermWeekNames = new Set(['第一週', '第二週', '第三週', '第四週', '第五週', '第六週', '第七週', '第八週']);
-    const weekLabel = word => weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
+    const weekLabel = word => word.source.startsWith('補充單字卡 ') ? word.source : weekSourceGroups.find(group => group.sources.has(word.source))?.label || '其他／尚未安排週次';
     const quizWeekOptions = [
       { label: '第一週', sources: new Set(quizPresetsByWeek.week1) },
       { label: '第二週', sources: new Set(quizPresetsByWeek.week2) },
@@ -604,14 +608,14 @@
     }
 
     function quizWeeks() {
-      const weeks = quizWeekOptions.filter(option => words.some(word => option.sources.has(word.source))).map(option => option.label);
+      const weeks = quizWeekOptions.filter(option => words.some(word => option.sources.has(word.source) || option.sources.has(word.originalSource))).map(option => option.label);
       if (words.some(word => !knownQuizSources.has(word.source))) weeks.push('其他／尚未安排週次');
       return weeks;
     }
 
     function wordMatchesQuizWeek(word, week) {
       const option = quizWeekOptions.find(item => item.label === week);
-      return option ? option.sources.has(word.source) : !knownQuizSources.has(word.source);
+      return option ? option.sources.has(word.source) || option.sources.has(word.originalSource) : !knownQuizSources.has(word.source) && !knownQuizSources.has(word.originalSource);
     }
 
     let quizOptionsInitialized = false;
@@ -791,7 +795,7 @@
       verbFormsLabel.hidden = verbFormsValue.hidden = !conjugation;
       verbFormsValue.textContent = conjugation;
       document.querySelector('#detailSyllables').textContent = valueOrDash(word.syllables);
-      document.querySelector('#detailSource').textContent = valueOrDash(word.source);
+      document.querySelector('#detailSource').textContent = word.originalSource ? `${word.source}｜${word.originalSource}` : valueOrDash(word.source);
       detailWrap.hidden = false;
       document.querySelector('#closeDetail').focus();
     }
