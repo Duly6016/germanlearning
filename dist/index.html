@@ -122,7 +122,7 @@
       <summary>考古題</summary>
       <div class="panel-content">
         <p>依真實小考順序重新作答；大小寫、ä／ö／ü／ß 都會嚴格判分。</p>
-        <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button> <button class="button secondary" id="openPastExam6" type="button">考古題 6｜第十週（6 題）</button></div>
+        <div id="pastExamMenu"><button class="button primary" id="openPastExam1" type="button">考古題 1（23 題）</button> <button class="button secondary" id="openPastExam2" type="button">考古題 2（33 題）</button> <button class="button secondary" id="openPastExam3" type="button">考古題 3（11 題）</button> <button class="button secondary" id="openPastExam4" type="button">考古題 4（25 題）</button> <button class="button secondary" id="openPastExam5" type="button">考古題 5（15 題）</button> <button class="button secondary" id="openPastExam6" type="button">考古題 6｜第十週（6 題）</button> <button class="button secondary" id="openPastExam7" type="button">考古題 7｜第十一週（10 題）</button></div>
         <form id="pastExamForm" hidden></form>
       </div>
     </details>
@@ -492,6 +492,18 @@
       ['魚 N（平日習慣，不指數量）', 'Ich esse _____.', 'keinen Fisch', 18],
       ['架子 N（指定眼前的架子）', 'Wo ist _____?', 'das Regal', 18]
     ].map(([hint, question, answer, points], index) => ({ id: index + 1, hint, question, answer, points }));
+    const pastExam7 = [
+      ['乳酪／起司 N（詢問家裡存貨，不指數量）', 'Haben wir _____?', 'Käse', 10],
+      ['鹽 N（詢問物件，不指種類）', 'Entschuldigung! Wo ist _____?', 'Salz', 10],
+      ['茶 N（平日習慣，不指數量）', 'Trinkst du _____?', 'Tee', 10],
+      ['水果 N（平日習慣；不可數）', 'Ich esse nicht so viel _____. Das ist nicht gut.', 'Obst', 10],
+      ['蔬菜 N（表事實；不可數）', '_____ ist wichtig.', 'Gemüse', 10],
+      ['礦泉水 N（強調一杯的量）', 'Entschuldigung! Kann ich _____ haben?', 'ein Mineralwasser', 10],
+      ['肉 N（詢問；不可數）', 'Haben wir _____?', 'Fleisch', 10],
+      ['米飯 N（否定事實）', 'Das ist _____.', 'kein Reis', 10],
+      ['葡萄酒 N（表事實）', '_____ ist gut. Aber zu viel trinken ist nicht gut.', 'Wein', 10],
+      ['啤酒 N（店家點飲料）', 'Hallo! _____, bitte.', 'Ein Bier', 10]
+    ].map(([hint, question, answer, points], index) => ({ id: index + 1, hint, question, answer, points }));
     let activePastExam = pastExam1;
 
     const text = value => String(value ?? '').trim();
@@ -770,6 +782,7 @@
     document.querySelector('#openPastExam4').addEventListener('click', () => openPastExam(pastExam4));
     document.querySelector('#openPastExam5').addEventListener('click', () => openPastExam(pastExam5));
     document.querySelector('#openPastExam6').addEventListener('click', () => openPastExam(pastExam6));
+    document.querySelector('#openPastExam7').addEventListener('click', () => openPastExam(pastExam7));
     document.querySelector('#pastExamForm').addEventListener('submit', event => {
       event.preventDefault(); const form = event.currentTarget; let score = 0; let pointsEarned = 0;
       const rows = activePastExam.map(item => { const answer = form.elements[`answer-${item.id}`].value; const correct = answer === item.answer; if (correct) { score += 1; pointsEarned += item.points || 0; } return `<p class="${correct ? 'correct' : 'incorrect'}">${item.id}. ${correct ? '答對' : `答錯（${describeError(answer, item.answer)}）`}｜你的答案：${escapeHtml(answer || '（空白）')}｜正確答案：${escapeHtml(item.answer)}</p>`; }).join('');
